@@ -1,0 +1,27 @@
+@startuml
+class Film {
+  + <<get>> id: integer
+  + <<get>> title: string
+  + <<get>> overview: string
+  + <<get>> duration: integer   /' Called runtime on the API '/
+  + <<get>> poster: string      /' The advertising image of the film '/
+  + <<get>> genres: string[]
+  + <<get>> producers: string[]
+
+  + find(id: integer): Film
+  + find(title: string): Film[]
+}
+
+abstract class FilmClient {
+  + fetch(id: integer): Film
+  + fetch(title: string): Film[]
+}
+
+class TheMovieDbClient{
+
+}
+
+FilmClient <|-- TheMovieDbClient
+
+Film *-- FilmClient
+@enduml
