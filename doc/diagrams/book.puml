@@ -1,0 +1,33 @@
+@startuml
+class Book {
+  + <<get>> Title: string
+  + <<get>> Description: string
+  + <<get>> Url: string
+  + <<get>> Authors: string[]
+  + <<get>> Isbn10: string
+  + <<get>> Isbn13: string
+  + <<get>> Publishers: string[]
+  + <<get>> Cover: string
+  + <<get>> Subjects: string[]
+  + <<get>> NumberOfPages: integer
+  + <<get>> PublishDate: date
+
+  + all(): Book[]
+  + find(id: string): Book
+  + find(author: string): Book
+  + find(title: string): Book
+}
+
+abstract class BookClient {
+    + fetch_all(): Book[]
+    + fetch(id: string): Book
+}
+
+class OpenLibraryClient {
+
+}
+
+BookClient <|-- OpenLibraryClient
+
+Book *-- BookClient
+@enduml
