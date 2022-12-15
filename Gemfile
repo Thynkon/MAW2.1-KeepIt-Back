@@ -49,3 +49,5 @@ group :development do
 end
 
 gem "http", "~> 5.1"
+
+gem "async", "~> 2.3"

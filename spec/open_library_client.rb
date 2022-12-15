@@ -5,27 +5,39 @@ describe BookClient do
     @book_client = OpenLibraryClient.new
   end
 
-  describe "by_id" do
-    it "returns a book with the given ID" do
-      # Given
-      isbn13 = "9780980200447"
-      title = "Slow reading"
+  RSpec::Matchers.define :contain_subject do |expected_value|
+    match do |actual|
+      puts actual[:subjects].inspect
+      status = actual[:subjects].map do |category|
+        category.downcase.include?(expected_value.downcase)
+      end
 
-      # When
-      book = @book_client.by_id(isbn13)
-      details = book["ISBN:#{isbn13}"]["details"]
+      status.all?
+    end
+  end
 
-      # Then
-      expect(details["isbn_13"]).to include(isbn13)
-      expect(details["title"]).to include(title)
+  describe "all" do
+    before(:each) do
+      @max = 10
+      @books = @book_client.all(max: @max)
     end
 
-    it "raises a BookNotFoundError if the book is not found" do
+    it "fetches 10 books of a category named 'any'" do
       # Given
-      isbn13 = "non_existing_isbn13"
 
-      # When / Then
-      expect { @book_client.by_id(isbn13) }.to raise_error(BookNotFoundError)
+      # When
+
+      # Then
+      expect(@books.length).to be(@max)
+    end
+
+    it "fetches 10 books of a category named 'any'" do
+      # Given
+
+      # When
+
+      # Then
+      expect(@books).to all( contain_subject("any") )
     end
   end
 end

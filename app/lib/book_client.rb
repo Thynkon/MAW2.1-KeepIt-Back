@@ -1,5 +1,5 @@
 class BookClient
-    def all
+    def all(max:, offset: 0, subject: "any")
         raise StandardError.new("This method has to be implemented!")
     end
 
