@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe BookClient do
   before(:each) do
-    @book_client = OpenLibraryClient.new
+    @book_client = GoogleBookApiClient.new
   end
 
   RSpec::Matchers.define :contain_subject do |expected_value|

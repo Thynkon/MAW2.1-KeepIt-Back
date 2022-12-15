@@ -31,9 +31,7 @@
 
 <!-- GETTING STARTED -->
 ## Getting Started
-This is microservice written in Elixir whose purpose is to `AWS S3` as a data source to perform some techniques related to `Business Intelligence`.
-
-Since this project is written in Elixir, you will need to install the BEAM.
+This is the backend of a web application whose goal is to allow users to keep a track of books/movies they are reading/watching.
 
 ### Prerequisites
 All you need to do is to install a Ruby version greater than `3.1.0`. One of the easiest ways to do it is by using [rvm](https://rvm.io/).

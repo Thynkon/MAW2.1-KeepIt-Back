@@ -1,6 +1,6 @@
 require 'async'
 
-class OpenLibraryClient < BookClient
+class GoogleBookApiClient < BookClient
   def initialize
   end
 
@@ -19,9 +19,14 @@ class OpenLibraryClient < BookClient
       {
         id: book["id"],
         title: book["volumeInfo"]["title"],
-        published_at: book["volumeInfo"]["publishedDate"],
+        description: book["volumeInfo"]["description"],
+        url: book["volumeInfo"]["selfLink"],
+        authors: book["volumeInfo"]["authors"],
         cover: book["volumeInfo"]["thumbnail"],
         subjects: book["volumeInfo"]["categories"],
+        language: book["volumeInfo"]["language"],
+        number_of_pages: book["volumeInfo"]["pageCount"],
+        published_at: book["volumeInfo"]["publishedDate"],
         upvotes: rand(1..100),
         downvotes: rand(1..100),
       }
