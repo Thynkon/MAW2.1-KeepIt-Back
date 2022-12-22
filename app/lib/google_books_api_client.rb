@@ -8,6 +8,12 @@ class GoogleBooksApiClient
     url = Rails.configuration.book_api_url
     key = Rails.application.credentials.google_books_api_key
 
+    if (max < GoogleBooksQueryBuilder::VALID_MAX.begin)
+      max = GoogleBooksQueryBuilder::VALID_MAX.begin
+    elsif (max > GoogleBooksQueryBuilder::VALID_MAX.last)
+      max = GoogleBooksQueryBuilder::VALID_MAX.last
+    end
+
     qb = GoogleBooksQueryBuilder.new
     query = qb.where(:subject, "any")
               .max(max)
