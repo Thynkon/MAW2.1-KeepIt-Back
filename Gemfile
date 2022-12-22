@@ -51,3 +51,6 @@ end
 gem "http", "~> 5.1"
 
 gem "async", "~> 2.3"
+
+gem 'rack-cors'
+gem 'jbuilder', '~> 2.7'
