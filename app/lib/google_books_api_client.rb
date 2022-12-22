@@ -8,9 +8,16 @@ class GoogleBooksApiClient
     url = Rails.configuration.book_api_url
     key = Rails.application.credentials.google_books_api_key
 
+    qb = GoogleBooksQueryBuilder.new
+    query = qb.where(:subject, "any")
+              .max(max)
+              .offset(offset)
+              .order_by(:newest)
+              .build
+
     task = Async do
       HTTP.headers(:accept => "application/json")
-          .get("#{url}/volumes?q=subject:any&orderBy=newest&maxResults=#{max}&startIndex=#{offset}&key=#{key}")
+        .get(query)
     end
 
     response = task.wait
@@ -28,8 +35,8 @@ class GoogleBooksApiClient
           language: book["volumeInfo"]["language"],
           number_of_pages: book["volumeInfo"]["pageCount"],
           published_at: book["volumeInfo"]["publishedDate"],
-          upvotes: rand(10..1_000_000),
-          downvotes: rand(10..1_000_000),
+          upvotes: rand(10..10_000_000),
+          downvotes: rand(10..10_000_000)
         }
       end
     else

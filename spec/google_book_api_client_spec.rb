@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe BookClient do
+describe GoogleBooksApiClient do
   before(:each) do
     @book_client = GoogleBooksApiClient.new
   end
