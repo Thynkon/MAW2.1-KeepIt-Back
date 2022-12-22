@@ -25,7 +25,18 @@ class OpenLibraryClient {
 
 }
 
+interface QueryBuilder {
+  + max(max: integer): QueryBuilder
+  + offset(offset: integer): QueryBuilder
+  + orderBy(setting: string): QueryBuilder
+  + where(field: string, value: any): QueryBuilder
+  + build(): string
+}
+
+class GoogleBookQueryBuilder {}
+
 BookClient <|-- OpenLibraryClient
+QueryBuilder <|.. GoogleBookQueryBuilder
 
 Book *-- BookClient
 @enduml

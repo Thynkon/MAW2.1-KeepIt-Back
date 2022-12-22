@@ -24,6 +24,6 @@ module Keepit
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.book_api_url = "https://www.googleapis.com/books/v1"
+    config.book_api_url = "https://www.googleapis.com/books/v1/volumes"
   end
 end
