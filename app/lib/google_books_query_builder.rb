@@ -1,6 +1,6 @@
 class GoogleBooksQueryBuilder
     VALID_ORDER_BY = [:newest, :relevance]
-    VALID_WHERE = [:title, :description, :subject]
+    VALID_WHERE = [:intitle, :description, :subject]
     VALID_MAX = (10..40)
 
     def initialize
@@ -35,7 +35,7 @@ class GoogleBooksQueryBuilder
   
     def build
       query_string = @query_params.map{|k,v| "#{k}=#{v}"}.join("&")
-      "#{@url}?#{query_string}"
+      "#{@url}?#{query_string}".gsub(/\s/, "+")
     end
 
     private
