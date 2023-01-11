@@ -40,4 +40,21 @@ describe GoogleBooksApiClient do
       expect(@books).to all( contain_subject("any") )
     end
   end
+
+  describe "by_title" do
+    before(:each) do
+      @title = "lord"
+      @max = 10
+      @books = @book_client.by_title(title: @title, max: @max)
+    end
+
+    it "fetches 10 books whose title contains 'lord'" do
+      # Given
+
+      # When
+
+      # Then
+      expect(@books.length).to be(@max)
+    end
+  end
 end
