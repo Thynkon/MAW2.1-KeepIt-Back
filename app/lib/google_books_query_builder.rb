@@ -1,6 +1,6 @@
 class GoogleBooksQueryBuilder
     VALID_ORDER_BY = [:newest, :relevance]
-    VALID_WHERE = [:intitle, :description, :subject]
+    VALID_WHERE = {title: :intitle, description: :description, subject: :subject}
     VALID_MAX = (10..40)
 
     def initialize
@@ -11,8 +11,8 @@ class GoogleBooksQueryBuilder
     end
 
     def where(field, value)
-      raise ArgumentError, "Invalid where value" unless VALID_WHERE.include?(field)
-      q("#{field}:#{value}")
+      raise ArgumentError, "Invalid where value" unless VALID_WHERE.keys.include?(field)
+      q("#{VALID_WHERE[field]}:#{value}")
       self
     end
   
