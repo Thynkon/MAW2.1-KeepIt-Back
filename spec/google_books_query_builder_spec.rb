@@ -12,7 +12,7 @@ describe GoogleBooksQueryBuilder do
   describe "#where" do
     it "sets the search query parameter" do
       @builder.where(:title, "ruby programming")
-      expect(@builder.instance_variable_get(:@query_params)[:q]).to eq("title:ruby programming")
+      expect(@builder.instance_variable_get(:@query_params)[:q]).to eq("intitle:ruby programming")
     end
 
     it "raises an error for an invalid where value" do
@@ -58,7 +58,7 @@ describe GoogleBooksQueryBuilder do
 
     it "constructs the correct query URL" do
       query_url = @builder.where(:title, "ruby programming").order_by(:newest).build
-      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes?key=#{@key}&q=title:ruby programming&orderBy=newest")
+      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes?key=#{@key}&q=intitle:ruby+programming&orderBy=newest")
     end
   end
 end
