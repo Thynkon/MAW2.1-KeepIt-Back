@@ -1,0 +1,42 @@
+@startuml
+class Book {
+  + <<get>> Id: string
+  + <<get>> Title: string
+  + <<get>> Description: string
+  + <<get>> Url: string
+  + <<get>> Authors: string[]
+  + <<get>> Cover: string
+  + <<get>> Subjects: string[]
+  + <<get>> NumberOfPages: integer
+  + <<get>> PublishDate: date
+
+  + all(max: integer, offset: integer, subject: string): Book[]
+  + find(id: string): Book
+  + find(author: string): Book[]
+  + find(title: string): Book[]
+}
+
+abstract class BookClient {
+    + all(max: integer, offset: integer, subject: string): Book[]
+    + by_id(id: string): Book
+}
+
+class OpenLibraryClient {
+
+}
+
+interface QueryBuilder {
+  + max(max: integer): QueryBuilder
+  + offset(offset: integer): QueryBuilder
+  + orderBy(setting: string): QueryBuilder
+  + where(field: string, value: any): QueryBuilder
+  + build(): string
+}
+
+class GoogleBookQueryBuilder {}
+
+BookClient <|-- OpenLibraryClient
+QueryBuilder <|.. GoogleBookQueryBuilder
+
+Book *-- BookClient
+@enduml
