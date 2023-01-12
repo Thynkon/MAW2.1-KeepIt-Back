@@ -1,6 +1,6 @@
 require 'cgi'
 
-class TheMovieDbClient < FilmClient
+class TheMovieDbClient
   def by_id(id)
     url = Rails.configuration.film_api_url
     api_key = ENV['THE_MOVIE_DB_API_3_KEY']
