@@ -5,14 +5,27 @@ class GoogleBooksApiClient
     @qb = GoogleBooksQueryBuilder.new
   end
 
-  def all(max: 10, offset: 0, subject: "any")
+  def all(max: 10, offset: 0, subject: nil)
+    subjects = [
+      "authors",
+      "fiction",
+      "inspirational",
+      "love",
+      "poetry",
+      "romance"
+    ]
+
+    if subject.nil?
+      subject = subjects.sample
+    end
+
     if (max < GoogleBooksQueryBuilder::VALID_MAX.begin)
       max = GoogleBooksQueryBuilder::VALID_MAX.begin
     elsif (max > GoogleBooksQueryBuilder::VALID_MAX.last)
       max = GoogleBooksQueryBuilder::VALID_MAX.last
     end
 
-    query = @qb.where(:subject, "any")
+    query = @qb.where(:subject, subject)
               .max(max)
               .offset(offset)
               .order_by(:newest)
@@ -46,9 +59,9 @@ class GoogleBooksApiClient
           id: book["id"],
           title: book["volumeInfo"]["title"],
           description: book["volumeInfo"]["description"],
-          url: book["volumeInfo"]["selfLink"],
+          url: book.dig("volumeInfo", "selfLink"),
           authors: book["volumeInfo"]["authors"],
-          cover: book["volumeInfo"]["thumbnail"],
+          cover: book.dig("volumeInfo", "imageLinks", "thumbnail"),
           subjects: book["volumeInfo"]["categories"],
           language: book["volumeInfo"]["language"],
           number_of_pages: book["volumeInfo"]["pageCount"],
