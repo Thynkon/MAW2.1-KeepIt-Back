@@ -21,6 +21,12 @@ describe GoogleBooksApiClient do
     end
   end
 
+  RSpec::Matchers.define :contain_title do |expected_value|
+    match do |actual|
+      actual[:title].downcase.include?(expected_value.downcase)
+    end
+  end
+
   describe "all" do
     before do
       @max = 10
@@ -40,6 +46,22 @@ describe GoogleBooksApiClient do
     end
   end
 
+  describe "by_id" do
+    before do
+      @id = "OXNUEAAAQBAJ"
+      @book = @book_client.by_id(id: @id)
+    end
+
+    it "fetches book by id" do
+      # Given
+
+      # When
+
+      # Then
+      expect(@book[:id]).to eq(@id)
+    end
+  end
+
   describe "by_title" do
     before do
       @title = "lord"
@@ -54,6 +76,7 @@ describe GoogleBooksApiClient do
 
       # Then
       expect(@books.length).to be(@max)
+      expect(@books).to all(contain_title(@title))
     end
   end
 end

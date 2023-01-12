@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe GoogleBooksQueryBuilder do
-  setup do
+  before do
     @builder = GoogleBooksQueryBuilder.new
   end
 
@@ -17,6 +17,13 @@ describe GoogleBooksQueryBuilder do
 
     it "raises an error for an invalid where value" do
       expect { @builder.where(:published_date, DateTime.now.utc) }.to raise_error(ArgumentError)
+    end
+
+    it "sets the book id url parameter" do
+      book_id = "OXNUEAAAQBAJ"
+
+      @builder.where(:id, book_id)
+      expect(@builder.instance_variable_get(:@url_params)[:volumeId]).to eq(book_id)
     end
   end
 
@@ -60,7 +67,12 @@ describe GoogleBooksQueryBuilder do
       query_url = @builder.where(:title, "ruby programming").order_by(:newest).build
       expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes?key=#{@key}&langRestrict=en&q=intitle:ruby+programming&orderBy=newest")
     end
+
+    it "constructs the correct query URL to fetch a book by an ID" do
+      book_id = "OXNUEAAAQBAJ"
+
+      query_url = @builder.where(:id, book_id).order_by(:newest).build
+      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes/#{book_id}?key=#{@key}&langRestrict=en&orderBy=newest")
+    end
   end
 end
-
-
