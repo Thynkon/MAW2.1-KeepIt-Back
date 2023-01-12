@@ -16,6 +16,7 @@
     </li>
     <li><a href="#tests">Tests</a></li>
     <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#conventions">Conventions</a></li>
     <li><a href="#license">License</a></li>
   </ol>
 </details>
@@ -31,25 +32,12 @@
 
 <!-- GETTING STARTED -->
 ## Getting Started
+
 This is the backend of a web application whose goal is to allow users to keep a track of books/movies they are reading/watching.
 
 ### Prerequisites
+
 All you need to do is to install a Ruby version greater than `3.1.0`. One of the easiest ways to do it is by using [rvm](https://rvm.io/).
-
-### Configuration
-As we use Google's Book API, you need to generate an API key for this project. [The official documentation](https://developers.google.com/books/docs/v1/using#APIKey) explains how to do it.
-
-Once you have generated the API key, you must enable it. Go to [this link](https://console.cloud.google.com/apis/library/books.googleapis.com) and enable it.
-
-Finally, add your API key to Rails credentials file:
-```sh
-./bin/rails credentials:edit
-```
-    
-This command should open a temporary `yml` file. You can then add Google's Book API key:
-```yml
-google_books_api_key: <YOUR_API_KEY>
-```
 
 ### Installation
 #### On your machine
@@ -74,9 +62,63 @@ google_books_api_key: <YOUR_API_KEY>
    ./bin/rails console
    ```
 
+#### On a Docker container
+1. Build the Docker image
+   ```sh
+   docker compose build
+   ```
+
+2. Start the container
+   ```sh
+   docker compose up -d
+   ```
+
+3. Show container logs
+   ```sh
+   docker compose logs -f
+   ```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Configuration
+#### Books API
+
+As we use Google's Book API, you need to generate an API key for this project. [The official documentation](https://developers.google.com/books/docs/v1/using#APIKey) explains how to do it.
+
+Once you have generated the API key, you must enable it. Go to [this link](https://console.cloud.google.com/apis/library/books.googleapis.com) and enable it.
+
+Finally, add your API key to Rails credentials file:
+```sh
+./bin/rails credentials:edit
+```
+
+This command should open a temporary `yml` file. You can then add Google's Book API key:
+```yml
+google_books_api_key: <YOUR_API_KEY>
+```
+
+#### Docker environment
+
+In order to be able to run the backend in a Docker container and perform requests from a frontend application, you need to enable and setup `CORS`.
+
+Here is an example of `config/initializers/cors.rb`:
+```ruby
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+ allow do
+   origins "*"
+
+   resource "*",
+     headers: :any,
+     methods: [:get, :post, :put, :patch, :delete, :options, :head]
+ end
+end
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ## Tests
+
 In order to run all tests type:
 
 ```sh
@@ -89,6 +131,15 @@ bundle exec rspec ./spec/<FILE_TEXT>_spec.rb
 ```
 
 ## Documentation
+
+You can find class diagrams as well other kinds of diagrams under `doc/`.
+
+Explanations about some researches we have done can also be found in `doc/`.
+
+## Conventions
+As we implement a REST API, we decided to use the same standard as Google.
+
+The specifications are greatly explained [here](https://google.github.io/styleguide/jsoncstyleguide.xml?showone=YouTube_JSON_API#YouTube_JSON_API). Take a look at the `YouTube JSON API` section.
 
 ## Contributing
 
