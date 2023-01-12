@@ -34,6 +34,13 @@ class GoogleBooksApiClient
     send(query)
   end
 
+  def by_id(id: "")
+    query = @qb.where(:id, id)
+              .build
+
+    send(query)
+  end
+
   def by_title(title: "", max: 10, offset: 0)
     if (max < GoogleBooksQueryBuilder::VALID_MAX.begin)
       max = GoogleBooksQueryBuilder::VALID_MAX.begin

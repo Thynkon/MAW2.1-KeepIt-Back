@@ -19,6 +19,13 @@ class BooksController < ApplicationController
     render "books/index", format: :json
   end
 
+  def show
+    id = params["id"]
+
+    @book_client = GoogleBooksApiClient.new
+    @book = @book_client.by_id(id: id)
+  end
+
   protected
   def handle_query_builder(exception)
     render "errors/error", format: :json, locals: { exception: exception, code: 400}, status: :bad_request
