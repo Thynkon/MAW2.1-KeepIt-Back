@@ -8,6 +8,7 @@ class GoogleBooksQueryBuilder
         key = Rails.application.credentials.google_books_api_key
 
         @query_params = {key: key}
+        @query_params[:langRestrict] = "en"
     end
 
     def where(field, value)

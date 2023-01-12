@@ -10,7 +10,6 @@ class BooksController < ApplicationController
 
   def search
     title = params["q"]
-    puts "Got title ==> #{title.inspect}"
     max = params.key?('max') ? params["max"].to_i : 10
     offset = params.key?('offset') ? params["offset"].to_i : 0
 

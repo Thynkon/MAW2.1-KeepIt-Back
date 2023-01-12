@@ -19,10 +19,11 @@ describe GoogleBooksApiClient do
   describe "all" do
     before(:each) do
       @max = 10
-      @books = @book_client.all(max: @max)
+      @subject = "fiction"
+      @books = @book_client.all(max: @max, subject: @subject)
     end
 
-    it "fetches 10 books of a category named 'any'" do
+    it "fetches 10 books of a category named 'fiction'" do
       # Given
 
       # When
@@ -31,13 +32,13 @@ describe GoogleBooksApiClient do
       expect(@books.length).to be(@max)
     end
 
-    it "fetches 10 books of a category named 'any'" do
+    it "fetches 10 books of a category named 'fiction'" do
       # Given
 
       # When
 
       # Then
-      expect(@books).to all( contain_subject("any") )
+      expect(@books).to all( contain_subject(@subject) )
     end
   end
 

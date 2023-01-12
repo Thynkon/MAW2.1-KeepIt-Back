@@ -58,7 +58,7 @@ describe GoogleBooksQueryBuilder do
 
     it "constructs the correct query URL" do
       query_url = @builder.where(:title, "ruby programming").order_by(:newest).build
-      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes?key=#{@key}&q=intitle:ruby+programming&orderBy=newest")
+      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes?key=#{@key}&langRestrict=en&q=intitle:ruby+programming&orderBy=newest")
     end
   end
 end

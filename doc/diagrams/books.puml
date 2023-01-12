@@ -33,10 +33,10 @@ interface QueryBuilder {
   + build(): string
 }
 
-class GoogleBookQueryBuilder {}
+class GoogleBooksQueryBuilder {}
 
 BookClient <|-- OpenLibraryClient
-QueryBuilder <|.. GoogleBookQueryBuilder
+QueryBuilder <|.. GoogleBooksQueryBuilder
 
 Book *-- BookClient
 @enduml
