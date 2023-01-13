@@ -15,7 +15,6 @@ module JsonWebToken
     end
 
     def self.decode(token)
-        puts "token: #{token}"
         # get payload; first index in decoded Array
         body = JWT.decode(token, HMAC_SECRET)[0]
         HashWithIndifferentAccess.new body
