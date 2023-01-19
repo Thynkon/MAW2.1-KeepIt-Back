@@ -6,6 +6,4 @@ Rails.application.routes.draw do
   end
 
   resources :users
-  
-  post 'auth/login', to: 'authentication#authenticate'
 end
