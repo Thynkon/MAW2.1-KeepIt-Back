@@ -4,7 +4,7 @@ require 'async'
 class TheMovieDbClient
   def by_id(id)
     url = Rails.configuration.film_api_url
-    api_key = ENV['THE_MOVIE_DB_API_3_KEY']
+    api_key = Rails.application.credentials.the_movie_db_api_3_key
     language = Rails.configuration.language # Could be replaced by i18n locales but in config file for now
 
     # /3/ is the api version
@@ -15,7 +15,7 @@ class TheMovieDbClient
 
   def by_title(title,page=1)
     url = Rails.configuration.film_api_url
-    api_key = ENV['THE_MOVIE_DB_API_3_KEY']
+    api_key = Rails.application.credentials.the_movie_db_api_3_key
     language = Rails.configuration.language # Could be replaced by i18n locales but in config file for now
 
     title = CGI.escape(title)
