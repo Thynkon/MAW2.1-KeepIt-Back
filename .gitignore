@@ -31,3 +31,10 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore env configuration files
+.env
+config/credentials.yml.enc
+
+# ignore rbenv files
+.ruby-version
