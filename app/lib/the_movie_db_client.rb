@@ -7,6 +7,7 @@ class TheMovieDbClient
     api_key = ENV['THE_MOVIE_DB_API_3_KEY']
     language = Rails.configuration.language # Could be replaced by i18n locales but in config file for now
 
+    # /3/ is the api version
     query = "#{url}/3/movie/#{id}?api_key=#{api_key}&language=#{language}"
     
     send(query)
@@ -19,6 +20,7 @@ class TheMovieDbClient
 
     title = CGI.escape(title)
 
+    # /3/ is the api version
     query = "#{url}/3/search/movie?api_key=#{api_key}&language=#{language}&query=#{title}&page=#{page}"
 
     result = send(query)
