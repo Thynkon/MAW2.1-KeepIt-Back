@@ -6,7 +6,7 @@ class TheMovieDbClient
   def initialize
     @api_url = Rails.configuration.film_api_url
     @api_version = Rails.configuration.film_api_version
-    @api_key = ENV['THE_MOVIE_DB_API_3_KEY']
+    @api_key = Rails.application.credentials.the_movie_db_api_3_key
   end
 
   def by_id(type,id)
@@ -29,8 +29,6 @@ class TheMovieDbClient
     title = CGI.escape(title)
 
     query = "#{@api_url}/#{@api_version}/search/#{type}?api_key=#{@api_key}&language=#{language}&query=#{title}&page=#{page}"
-
-    Rails.logger.info query
 
     result = send(query)
 
