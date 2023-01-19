@@ -11,4 +11,10 @@ Rails.application.routes.draw do
       get 'search'
     end
   end
+
+  resources :shows, only: [:show] do
+    collection do
+      get 'search'
+    end
+  end
 end
