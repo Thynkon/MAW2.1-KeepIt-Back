@@ -33,3 +33,4 @@
 /config/master.key
 
 /config/initializers/cors.rb
+config/credentials.yml.enc
