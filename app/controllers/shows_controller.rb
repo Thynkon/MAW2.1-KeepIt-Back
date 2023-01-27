@@ -1,9 +1,12 @@
 class ShowsController < ApplicationController
+  def initialize
+    @tmdb_client = TheMovieDbClient.new
+  end
+
   def search
     query = params[:q]
     page = params.key?(:page) ? params[:page] : 1
 
-    @tmdb_client = TheMovieDbClient.new
     @shows = @tmdb_client.by_title('tv', query, page)
 
     #render plain: @movies
@@ -12,9 +15,6 @@ class ShowsController < ApplicationController
   end
 
   def show
-    @tmdb_client = TheMovieDbClient.new
     @show = @tmdb_client.by_id('tv', params[:id])
-
-    render "shows/show", format: :json
   end
 end
