@@ -23,7 +23,12 @@ module Keepit
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
     config.book_api_url = "https://www.googleapis.com/books/v1/volumes"
+
+    config.film_api_url = "https://api.themoviedb.org"
+    config.film_api_version = 3
+
     config.api_version = "1.0"
   end
 end
