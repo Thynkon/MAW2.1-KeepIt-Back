@@ -1,5 +1,9 @@
 class BooksController < ApplicationController
   rescue_from ArgumentError, with: :handle_query_builder
+
+  UP_VOTE = 1
+  DOWN_VOTE = -1
+
   def index
     max = params.key?('max') ? params["max"].to_i : 10
     offset = params.key?('offset') ? params["offset"].to_i : 0
@@ -25,8 +29,29 @@ class BooksController < ApplicationController
     @book = @book_client.by_id(id: id)
   end
 
+  def upvote
+    vote_on_a_book(UP_VOTE)
+  end
+
+  def downvote
+    vote_on_a_book(DOWN_VOTE)
+  end
+
   protected
   def handle_query_builder(exception)
     render "errors/error", format: :json, locals: { exception: exception, code: 400}, status: :bad_request
+  end
+
+  def vote_on_a_book(vote)
+    book_id = params["id"]
+    user_id = params["user_id"]
+
+    puts "book_id: #{book_id}"
+    puts "user_id: #{user_id}"
+    
+    @user_votes_book = UserVotesBook.find_or_initialize_by(user_id: user_id, book_id: book_id)
+    @user_votes_book.vote = vote
+    @user_votes_book.book_id = book_id
+    @user_votes_book.save
   end
 end
