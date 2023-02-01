@@ -12,6 +12,10 @@ COPY Gemfile Gemfile.lock ./
 # Install gems
 RUN bundle install --jobs 20 --retry 5
 
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
 # Copy the rest of the application code
 COPY . .
 
