@@ -7,7 +7,7 @@ class ShowsController < ApplicationController
     query = params[:q]
     page = params.key?(:page) ? params[:page] : 1
 
-    @shows = @tmdb_client.by_title('tv', query, page)
+    @shows = @tmdb_client.by_title(type:'tv', title:query, page:page)
 
     #render plain: @movies
 
@@ -15,6 +15,6 @@ class ShowsController < ApplicationController
   end
 
   def show
-    @show = @tmdb_client.by_id('tv', params[:id])
+    @show = @tmdb_client.by_id(type:'tv', id:params[:id])
   end
 end

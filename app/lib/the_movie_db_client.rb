@@ -10,7 +10,7 @@ class TheMovieDbClient
     @language = language = Rails.configuration.language # Could be replaced by i18n locales but in config file for now
   end
 
-  def by_id(type,id)
+  def by_id(type:,id:)
 
     raise ArgumentError.new("Invalid content type: #{type}") unless authorized_type?(type)
 
@@ -25,7 +25,7 @@ class TheMovieDbClient
     JSON.parse(response.body)
   end
 
-  def by_title(type,title,page=1)
+  def by_title(type:,title:,page:1)
 
     raise ArgumentError.new("Invalid content type: #{type}") unless authorized_type?(type)
 
@@ -52,6 +52,8 @@ class TheMovieDbClient
 
     JSON.parse(response.body)
   end
+
+  private
 
   def fetch_response(response)
       {
