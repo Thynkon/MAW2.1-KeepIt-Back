@@ -53,6 +53,17 @@ class TheMovieDbClient
     JSON.parse(response.body)
   end
 
+  def episode_by_number_in_season(show_id:, season_number:, episode_number:)
+    query = "#{@api_url}/#{@api_version}/tv/#{show_id}/season/#{season_number}/episode/#{episode_number}?api_key=#{@api_key}&language=#{@language}"
+    response = send(query)
+
+    unless response.status.success?
+        raise StandardError.new("Show or season not found") if response.status.code == 404
+    end
+
+    JSON.parse(response.body)
+  end
+
   private
 
   def fetch_response(response)

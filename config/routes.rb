@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     collection do
       get 'search'
     end
-    resources :seasons, only: [:show]
+    resources :seasons, only: [:show] do
+      resources :episodes, only: [:show]
+    end
   end
 end
