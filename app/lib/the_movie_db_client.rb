@@ -92,6 +92,6 @@ class TheMovieDbClient
   end
 
   def authorized_type?(type)
-    ['movie','tv'].include?(type)
+    [:movie,:tv].include?(type)
   end
 end
