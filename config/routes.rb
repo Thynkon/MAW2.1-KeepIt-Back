@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  get 'books', to: 'books#index'
-  get 'books/search', to: 'books#search'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :books, only: [:index, :show] do
+    collection do
+      get 'search'
+      put '/:id/upvote', to: 'books#upvote'
+      put '/:id/downvote', to: 'books#downvote'
+      delete '/:id/unvote', to: 'books#unvote'
+    end
+  end
 
   resources :movies, only: [:show] do
     collection do
@@ -20,4 +22,6 @@ Rails.application.routes.draw do
       resources :episodes, only: [:show]
     end
   end
+
+  resources :users
 end

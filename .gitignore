@@ -34,7 +34,9 @@
 
 # Ignore env configuration files
 .env
-config/credentials.yml.enc
 
 # ignore rbenv files
 .ruby-version
+
+/config/credentials.yml.enc
+/config/initializers/cors.rb
