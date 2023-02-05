@@ -21,10 +21,9 @@ class BooksController < ApplicationController
     @books = @book_client.by_title(title: title, max: max, offset: offset)
     render "books/index", format: :json
   end
-
   def show
     book_id = params["id"]
-    @user_id = 1 # TODO: user_id should be retrieved from the token 
+    @user_id = 1 # TODO: user_id should be retrieved from the token
 
     @book_client = GoogleBooksApiClient.new
     @book = @book_client.by_id(id: book_id)

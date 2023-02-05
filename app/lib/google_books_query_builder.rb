@@ -25,6 +25,7 @@ class GoogleBooksQueryBuilder
       @url_params[VALID_WHERE[field]] = value
     else
       q("#{VALID_WHERE[field]}:#{value}")
+     ### @query_params[:filter] = 'partial'
     end
     self
   end
