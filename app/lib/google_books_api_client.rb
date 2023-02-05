@@ -110,8 +110,8 @@ class GoogleBooksApiClient
       language: book['volumeInfo']['language'],
       number_of_pages: book['volumeInfo']['pageCount'],
       published_at: book['volumeInfo']['publishedDate'],
-      upvotes: rand(10..10_000_000), # random for now, should be fetched from database
-      downvotes: rand(10..10_000_000) # random for now, should be fetched from database
+      upvotes: UserVotesBook.where(book_id: book['id'], vote: 1).count,
+      downvotes: UserVotesBook.where(book_id: book['id'], vote: -1).count
     }
   end
 

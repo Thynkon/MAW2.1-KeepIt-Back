@@ -23,10 +23,14 @@ class BooksController < ApplicationController
   end
 
   def show
-    id = params["id"]
+    book_id = params["id"]
+    @user_id = 1 # TODO: user_id should be retrieved from the token 
 
     @book_client = GoogleBooksApiClient.new
-    @book = @book_client.by_id(id: id)
+    @book = @book_client.by_id(id: book_id)
+
+    # inject the user's vote
+    @user_votes_book = UserVotesBook.find_by(user_id: 1, book_id: book_id) # TODO: user_id should be retrieved from the token
   end
 
   def upvote
@@ -35,6 +39,14 @@ class BooksController < ApplicationController
 
   def downvote
     vote_on_a_book(DOWN_VOTE)
+  end
+
+  def unvote
+    book_id = params["id"]
+    user_id = params["user_id"]
+
+    @user_votes_book = UserVotesBook.find_by(user_id: 1, book_id: book_id) # TODO: user_id should be retrieved from the token
+    @user_votes_book.destroy
   end
 
   protected
@@ -49,7 +61,7 @@ class BooksController < ApplicationController
     puts "book_id: #{book_id}"
     puts "user_id: #{user_id}"
     
-    @user_votes_book = UserVotesBook.find_or_initialize_by(user_id: user_id, book_id: book_id)
+    @user_votes_book = UserVotesBook.find_or_initialize_by(user_id: 1, book_id: book_id) # TODO: user_id should be retrieved from the token
     @user_votes_book.vote = vote
     @user_votes_book.book_id = book_id
     @user_votes_book.save

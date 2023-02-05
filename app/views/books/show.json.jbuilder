@@ -14,5 +14,7 @@ json.data do
     json.published_at @book[:published_at]
     json.upvotes @book[:upvotes]
     json.downvotes @book[:downvotes]
+
+    json.user_vote @user_votes_book ? @user_votes_book.vote : 0 if @user_id
   end
 end
