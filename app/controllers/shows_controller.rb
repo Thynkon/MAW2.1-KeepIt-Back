@@ -15,4 +15,12 @@ class ShowsController < ApplicationController
   def show
     @show = @tmdb_client.by_id(type: :tv, id:params[:id])
   end
+
+  def popular
+    page = params.key?(:page) ? params[:page] : 1
+
+    @shows = @tmdb_client.popular(type: :tv, page:page)
+
+    render "shows/search", format: :json
+  end
 end
