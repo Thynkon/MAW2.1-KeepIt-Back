@@ -11,12 +11,14 @@ Rails.application.routes.draw do
   resources :movies, only: [:show] do
     collection do
       get 'search'
+      get 'popular'
     end
   end
 
   resources :shows, only: [:show] do
     collection do
       get 'search'
+      get 'popular'
     end
     resources :seasons, only: [:show] do
       resources :episodes, only: [:show]

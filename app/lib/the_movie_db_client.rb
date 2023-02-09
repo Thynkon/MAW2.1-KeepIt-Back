@@ -10,6 +10,17 @@ class TheMovieDbClient
     @language = language = Rails.configuration.language # Could be replaced by i18n locales but in config file for now
   end
 
+  def popular(type:,page:1)
+
+    raise ArgumentError.new("Invalid content type: #{type}") unless authorized_type?(type)
+
+    query = "#{@api_url}/#{@api_version}/#{type}/popular?api_key=#{@api_key}&language=#{@language}&page=#{page}"
+
+    response = send(query)
+
+    fetch_response(JSON.parse(response.body))
+  end
+
   def by_id(type:,id:)
 
     raise ArgumentError.new("Invalid content type: #{type}") unless authorized_type?(type)
