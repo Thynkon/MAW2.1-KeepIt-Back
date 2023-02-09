@@ -97,6 +97,20 @@ This command should open a temporary `yml` file. You can then add Google's Book 
 google_books_api_key: <YOUR_API_KEY>
 ```
 
+#### Movies and shows API
+
+As we use TheMovieDb API, you also need to generate an API key for this project. [The official documentation](https://developers.themoviedb.org/3/getting-started/introduction) explains how to do it.
+
+Once the key is generated, you can add it the same way as for books API.
+Open the credentials file:
+```sh
+./bin/rails credentials:edit
+```
+And add the key at the end of it:
+```yml
+the_movie_db_api_3_key: <YOUR_API_KEY>
+```
+
 #### Docker environment
 
 In order to be able to run the backend in a Docker container and perform requests from a frontend application, you need to enable and setup `CORS`.
