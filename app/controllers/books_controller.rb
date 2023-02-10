@@ -49,6 +49,16 @@ class BooksController < ApplicationController
     @user_votes_book.destroy
   end
 
+  def track
+    book_id = params["id"]
+    user_id = 1
+    page = params["page"]
+
+    @track = UserReadsBook.find_or_initialize_by(user_id: user_id, book_id: book_id)
+    @track.page = page
+    @track.save
+  end
+
   protected
   def handle_query_builder(exception)
     render "errors/error", format: :json, locals: { exception: exception, code: 400}, status: :bad_request

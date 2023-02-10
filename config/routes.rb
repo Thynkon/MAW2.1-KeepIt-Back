@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       put '/:id/upvote', to: 'books#upvote'
       put '/:id/downvote', to: 'books#downvote'
       delete '/:id/unvote', to: 'books#unvote'
+      put '/:id/track', to: 'books#track'
     end
   end
 
