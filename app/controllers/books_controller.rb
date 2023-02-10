@@ -31,6 +31,7 @@ class BooksController < ApplicationController
 
     # inject the user's vote
     @user_votes_book = UserVotesBook.find_by(user_id: 1, book_id: book_id) # TODO: user_id should be retrieved from the token
+    @user_reads_book = UserReadsBook.find_by(user_id: @user_id, book_id: book_id)
   end
 
   def upvote
@@ -50,13 +51,13 @@ class BooksController < ApplicationController
   end
 
   def track
-    book_id = params["id"]
-    user_id = 1
     page = params["page"]
+    book_id = params["id"]
+    @user_id = 1
 
-    @track = UserReadsBook.find_or_initialize_by(user_id: user_id, book_id: book_id)
-    @track.page = page
-    @track.save
+    @user_reads_book = UserReadsBook.find_or_initialize_by(user_id: @user_id, book_id: book_id)
+    @user_reads_book.page = page
+    @user_reads_book.save
   end
 
   protected
