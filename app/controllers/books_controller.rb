@@ -9,16 +9,18 @@ class BooksController < ApplicationController
     offset = params.key?('offset') ? params["offset"].to_i : 0
 
     @book_client = GoogleBooksApiClient.new
-    @books = @book_client.all(max: max, offset: offset)
+    @books = @book_client.all(max:, offset:)
   end
 
   def search
+    raise ArgumentError, "Missing query parameter 'q'" unless params.key?('q')
+
     title = params["q"]
     max = params.key?('max') ? params["max"].to_i : 10
     offset = params.key?('offset') ? params["offset"].to_i : 0
 
     @book_client = GoogleBooksApiClient.new
-    @books = @book_client.by_title(title: title, max: max, offset: offset)
+    @books = @book_client.by_title(title:, max:, offset:)
     render "books/index", format: :json
   end
   
@@ -30,8 +32,8 @@ class BooksController < ApplicationController
     @book = @book_client.by_id(id: book_id)
 
     # inject the user's vote
-    @user_votes_book = UserVotesBook.find_by(user_id: 1, book_id: book_id) # TODO: user_id should be retrieved from the token
-    @user_reads_book = UserReadsBook.find_by(user_id: @user_id, book_id: book_id)
+    @user_votes_book = UserVotesBook.find_by(user_id: 1, book_id:) # TODO: user_id should be retrieved from the token
+    @user_reads_book = UserReadsBook.find_by(user_id: @user_id, book_id:)
   end
 
   def upvote
@@ -44,18 +46,20 @@ class BooksController < ApplicationController
 
   def unvote
     book_id = params["id"]
-    user_id = params["user_id"]
+    user_id = 1
 
-    @user_votes_book = UserVotesBook.find_by(user_id: 1, book_id: book_id) # TODO: user_id should be retrieved from the token
+    @user_votes_book = UserVotesBook.find_by(user_id:, book_id:) # TODO: user_id should be retrieved from the token
     @user_votes_book.destroy
   end
 
   def track
+    raise ArgumentError, "Missing query parameter 'page'" unless params.key?('page')
+
     page = params["page"]
     book_id = params["id"]
     @user_id = 1
 
-    @user_reads_book = UserReadsBook.find_or_initialize_by(user_id: @user_id, book_id: book_id)
+    @user_reads_book = UserReadsBook.find_or_initialize_by(user_id: @user_id, book_id:)
     @user_reads_book.page = page
     @user_reads_book.save
   end
@@ -69,10 +73,7 @@ class BooksController < ApplicationController
     book_id = params["id"]
     user_id = params["user_id"]
 
-    puts "book_id: #{book_id}"
-    puts "user_id: #{user_id}"
-    
-    @user_votes_book = UserVotesBook.find_or_initialize_by(user_id: 1, book_id: book_id) # TODO: user_id should be retrieved from the token
+    @user_votes_book = UserVotesBook.find_or_initialize_by(user_id: 1, book_id:) # TODO: user_id should be retrieved from the token
     @user_votes_book.vote = vote
     @user_votes_book.book_id = book_id
     @user_votes_book.save

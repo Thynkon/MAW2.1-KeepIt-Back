@@ -36,54 +36,15 @@ class GoogleBooksApiClient
 
     books = send(query)
 
-    # Since Google Books API does not offer a way to filter books by cover and description
-    # we need to filter them ourselves.
-
     books = books["items"]
 
-    # First, we filter books by cover
-    books_with_cover = filter_books(books, filter: :cover)
-    if books_with_cover.length == max
-      books = books
-    else
-      # Unless all books have descriptions
-      until books_with_cover.length == max
-        number_of_books_without_cover = max - books_with_cover.length
-        task = Async do
-          HTTP.headers(accept: 'application/json')
-              .get(@qb.offset(number_of_books_without_cover + books_with_cover.length).build)
-        end
+    # Since Google Books API does not offer a way to filter books by cover and description
+    # we need to filter them ourselves.
+    cover_filter = CoverFilter.new(max:, qb: @qb)
+    description_filter = DescriptionFilter.new(max:, qb: @qb)
 
-        response = task.wait
-        parsed_response = JSON.parse(response.body)["items"]
-
-        new_books_with_cover = filter_books(parsed_response, filter: :description, length: number_of_books_without_cover)
-        books_with_cover.concat(new_books_with_cover)
-      end
-      books = books_with_cover
-    end
-
-    # Then, we filter books by description
-    books_with_description = filter_books(books, filter: :description)
-    if books_with_description.length == max
-      books = books
-    else
-      # Unless all books have descriptions
-      until books_with_description.length == max
-        number_of_books_without_description = max - books_with_description.length
-        task = Async do
-          HTTP.headers(accept: 'application/json')
-              .get(@qb.offset(number_of_books_without_description + books_with_description.length).build)
-        end
-
-        response = task.wait
-        parsed_response = JSON.parse(response.body)["items"]
-
-        new_books_with_description = filter_books(parsed_response, filter: :description, length: number_of_books_without_description)
-        books_with_description.concat(new_books_with_description)
-      end
-      books = books_with_description
-    end
+    cover_filter.next_handler(description_filter)
+    books = cover_filter.handle(books)
 
     format_response(books)
   end
@@ -154,39 +115,5 @@ class GoogleBooksApiClient
 
     response = task.wait
     JSON.parse(response.body)
-  end
-
-  def fetch_books(books, with_cover: true)
-    books['items'].select do |book|
-      if with_cover
-        !book.dig('volumeInfo', 'imageLinks', 'thumbnail').nil?
-      else
-        book.dig('volumeInfo', 'imageLinks', 'thumbnail').nil?
-      end
-    end
-  end
-
-  def filter_books(books, filter: nil, presence: true, length: 0)
-    b = books.select do |book|
-      if filter == :description
-        if presence
-          !book.dig('volumeInfo', 'description').nil?
-        else
-          book.dig('volumeInfo', 'description').nil?
-        end
-      elsif filter == :cover
-        if presence
-          !book.dig('volumeInfo', 'imageLinks', 'thumbnail').nil?
-        else
-          book.dig('volumeInfo', 'imageLinks', 'thumbnail').nil?
-        end
-      end
-    end
-
-    if length != 0
-      b.first(length)
-    else
-      b
-    end
   end
 end
