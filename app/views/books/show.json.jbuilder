@@ -15,7 +15,7 @@ json.data do
     json.upvotes @book[:upvotes]
     json.downvotes @book[:downvotes]
 
-    json.user_vote @user_votes_book ? @user_votes_book.vote : 0 if @user_id
-    json.user_page @user_reads_book ? @user_reads_book.page : 0 if @user_id
+    json.user_vote @user_votes_book ? @user_votes_book.vote : 0 if @user
+    json.user_page @user_reads_book ? @user_reads_book.page : 0 if @user
   end
 end

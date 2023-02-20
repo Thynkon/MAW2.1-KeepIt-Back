@@ -1,4 +1,5 @@
 class BooksController < ApplicationController
+  before_action :authenticate, only: [:upvote, :downvote, :unvote, :track]
   rescue_from ArgumentError, with: :handle_query_builder
 
   UP_VOTE = 1
@@ -26,14 +27,14 @@ class BooksController < ApplicationController
   
   def show
     book_id = params["id"]
-    @user_id = 1 # TODO: user_id should be retrieved from the token
+    @user = current_user
 
     @book_client = GoogleBooksApiClient.new
     @book = @book_client.by_id(id: book_id)
 
     # inject the user's vote
-    @user_votes_book = UserVotesBook.find_by(user_id: 1, book_id:) # TODO: user_id should be retrieved from the token
-    @user_reads_book = UserReadsBook.find_by(user_id: @user_id, book_id:)
+    @user_votes_book = UserVotesBook.find_by(user_id: @user&.id, book_id:)
+    @user_reads_book = UserReadsBook.find_by(user_id: @user&.id, book_id:)
   end
 
   def upvote
@@ -46,9 +47,9 @@ class BooksController < ApplicationController
 
   def unvote
     book_id = params["id"]
-    user_id = 1
+    @user = current_user
 
-    @user_votes_book = UserVotesBook.find_by(user_id:, book_id:) # TODO: user_id should be retrieved from the token
+    @user_votes_book = UserVotesBook.find_by(user_id: @user.id, book_id:)
     @user_votes_book.destroy
   end
 
@@ -57,11 +58,11 @@ class BooksController < ApplicationController
 
     page = params["page"]
     book_id = params["id"]
-    @user_id = 1
+    @user = current_user
 
-    @user_reads_book = UserReadsBook.find_or_initialize_by(user_id: @user_id, book_id:)
+    @user_reads_book = UserReadsBook.find_or_initialize_by(user_id: @user.id, book_id:)
     @user_reads_book.page = page
-    @user_reads_book.save
+    @user_reads_book.save!
   end
 
   protected
@@ -71,11 +72,11 @@ class BooksController < ApplicationController
 
   def vote_on_a_book(vote)
     book_id = params["id"]
-    user_id = params["user_id"]
+    @user = current_user
 
-    @user_votes_book = UserVotesBook.find_or_initialize_by(user_id: 1, book_id:) # TODO: user_id should be retrieved from the token
+    @user_votes_book = UserVotesBook.find_or_initialize_by(user_id: @user.id, book_id:)
     @user_votes_book.vote = vote
     @user_votes_book.book_id = book_id
-    @user_votes_book.save
+    @user_votes_book.save!
   end
 end
