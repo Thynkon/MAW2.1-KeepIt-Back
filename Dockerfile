@@ -13,8 +13,9 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install --jobs 20 --retry 5
 
 COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+RUN sed -i 's/\r$//' /usr/bin/entrypoint.sh \
+    && chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"] 
 
 # Copy the rest of the application code
 COPY . .
@@ -24,4 +25,4 @@ EXPOSE 4000
 
 # Run the Rails server
 CMD ["rails", "server", "-b", "0.0.0.0", "-p", "4000"]
-
+#CMD ["rm", "/app/tmp/pids/server.pid"]
