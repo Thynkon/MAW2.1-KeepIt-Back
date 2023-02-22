@@ -63,17 +63,29 @@ All you need to do is to install a Ruby version greater than `3.1.0`. One of the
    ```
 
 #### On a Docker container
-1. Build the Docker image
+
+If you take a look at the `Dockerfile`, you will notice that you can change the default `EDITOR` environment variable that is used to edit `Ruby on Rails` credentials files.
+
+1. Change the `EDITOR` environment variable (**OPTIONAL**)
+
+   ```yml
+   build:
+      context: .
+      args:
+        editor: "<YOUR_FAVOURITE_EDITOR>"
+   ```
+
+2. Build the Docker image
    ```sh
    docker compose build
    ```
 
-2. Start the container
+3. Start the container
    ```sh
    docker compose up -d
    ```
 
-3. Show container logs
+4. Show container logs
    ```sh
    docker compose logs -f
    ```

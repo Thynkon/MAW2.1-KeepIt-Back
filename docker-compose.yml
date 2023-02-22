@@ -1,7 +1,10 @@
 version: "3.3"
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        editor: "nano"
     volumes:
       - .:/app
     ports:
