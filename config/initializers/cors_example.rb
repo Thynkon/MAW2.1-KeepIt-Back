@@ -11,6 +11,7 @@
 #
 #     resource "*",
 #       headers: :any,
+#       expose: ['authorization'],
 #       methods: [:get, :post, :put, :patch, :delete, :options, :head]
 #   end
 # end
