@@ -2,8 +2,6 @@ class User < ApplicationRecord
   include Rodauth::Rails.model
   enum :status, unverified: 1, verified: 2, closed: 3
 
-  has_secure_password
-
   has_many :user_votes_books
 
   validates :username, presence: true, uniqueness: true

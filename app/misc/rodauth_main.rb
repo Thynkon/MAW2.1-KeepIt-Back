@@ -20,6 +20,12 @@ class RodauthMain < Rodauth::Rails::Auth
     # Accept only JSON requests.
     only_json? true
 
+    # Change redirect when login is required to "/signin"
+    require_login_redirect { login_path }
+
+    # Change create account route to "/register"
+    create_account_route "register"
+
     # Handle login and password confirmation fields on the client side.
     # require_password_confirmation? false
     # require_login_confirmation? false
