@@ -2,7 +2,7 @@ class RodauthMain < Rodauth::Rails::Auth
   configure do
     # List of authentication features that are loaded.
     enable :create_account,
-      :login, :logout, :json, :jwt,
+      :login, :logout, :json, :jwt, :jwt_refresh,
       :reset_password, :change_password, :change_password_notify,
       :change_login, :verify_login_change, :close_account
 
@@ -16,6 +16,11 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Set JWT secret, which is used to cryptographically protect the token.
     jwt_secret Rails.application.secrets.secret_key_base
+
+    jwt_refresh_token_table :user_jwt_refresh_keys
+    jwt_refresh_token_account_id_column :user_id
+    # Default expiration time is 1 hour
+    jwt_access_token_period 3600
 
     # Accept only JSON requests.
     only_json? true
