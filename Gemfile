@@ -60,3 +60,5 @@ end
 
 gem 'rack-cors'
 gem 'jwt'
+
+gem "rodauth-rails", "~> 1.7"

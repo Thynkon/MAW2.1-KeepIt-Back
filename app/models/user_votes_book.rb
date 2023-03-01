@@ -1,5 +1,5 @@
 class UserVotesBook < ApplicationRecord
-    belongs_to :user
+    belongs_to :user, class_name: "Account", foreign_key: "user_id"
 
     @@donwvote = -1
     @@upvote = 1
