@@ -131,5 +131,6 @@ class RodauthMain < Rodauth::Rails::Auth
     # verify_account_grace_period 3.days.to_i
     # reset_password_deadline_interval Hash[hours: 6]
     # verify_login_change_deadline_interval Hash[days: 2]
+    rails_account_model { User}
   end
 end
