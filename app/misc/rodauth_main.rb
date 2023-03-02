@@ -22,6 +22,28 @@ class RodauthMain < Rodauth::Rails::Auth
     # Default expiration time is 1 hour
     jwt_access_token_period 3600
 
+    # After reading Rodauth's source and documentation, I didn't find a way to
+    # add custom data to the JWT token. So, I'm using the 'session_jwt' method (https://rodauth.jeremyevans.net/rdoc/files/doc/jwt_rdoc.html#label-Auth+Methods)
+    set_jwt_token do |token|
+      # By default, the session_jwt method returns a JWT token with the following payload:
+      # { "account_id" => X, "authenticated_by" => ["password"]}
+      # Those values are required by Rodauth to validated the JWT
+      #   From rodauth/features/base.rb
+      #       session_key :session_key, :account_id
+      #       session_key :authenticated_by_session_key, :authenticated_by
+      # Thus, those values must be present in the JWT token.
+      payload = JWT.decode(session_jwt, Rails.application.secrets.secret_key_base, true, lgorithm: jwt_algorithm)
+
+      # When decoding the JWT token, the payload is an array of hashes. The first hash is the payload,
+      # the second hash is the header. We want to delete the header from the payload.
+      payload = payload.delete_if{|k| k.has_key?("alg")}.first
+      payload["user"] = rails_account.as_json(only: [:id, :email, :username])
+
+      token = JWT.encode(payload, Rails.application.secrets.secret_key_base, jwt_algorithm)
+
+      json_response[jwt_access_token_key] = token
+    end
+
     # Accept only JSON requests.
     only_json? true
 
