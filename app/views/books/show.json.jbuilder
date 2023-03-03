@@ -8,7 +8,7 @@ json.data do
     json.description @book[:description]
     json.authors @book[:authors]
     json.cover @book[:cover]
-    json.subjects @book[:subjects].map { |subject| subject.split('/') }.flatten.uniq
+    json.subjects @book[:subjects]&.map { |subject| subject.split('/') }&.flatten&.uniq
     json.language @book[:language]
     json.number_of_pages @book[:number_of_pages]
     json.published_at @book[:published_at]
