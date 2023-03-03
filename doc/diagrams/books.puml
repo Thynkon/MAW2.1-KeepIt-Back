@@ -1,27 +1,13 @@
-@startuml
-class Book {
-  + <<get>> Id: string
-  + <<get>> Title: string
-  + <<get>> Description: string
-  + <<get>> Url: string
-  + <<get>> Authors: string[]
-  + <<get>> Cover: string
-  + <<get>> Subjects: string[]
-  + <<get>> NumberOfPages: integer
-  + <<get>> PublishDate: date
-
-  + all(max: integer, offset: integer, subject: string): Book[]
-  + find(id: string): Book
-  + find(author: string): Book[]
-  + find(title: string): Book[]
-}
-
+@startuml BooksDiagram
 abstract class BookClient {
+    - format_response(response: JsonResponse): Book[]
+    - format_book(book: Book): Book
     + all(max: integer, offset: integer, subject: string): Book[]
-    + by_id(id: string): Book
+    + byId(id: string): Book
+    + byTitle(title: string, max: integer, offset: integer): Book
 }
 
-class OpenLibraryClient {
+class GoogleBooksApiClient {
 
 }
 
@@ -30,12 +16,13 @@ interface QueryBuilder {
   + offset(offset: integer): QueryBuilder
   + orderBy(setting: string): QueryBuilder
   + where(field: string, value: any): QueryBuilder
+  + printType(type: string): QueryBuilder
   + build(): string
 }
 
 class GoogleBooksQueryBuilder {}
 
-BookClient <|-- OpenLibraryClient
+BookClient <|-- GoogleBooksApiClient
 QueryBuilder <|.. GoogleBooksQueryBuilder
 
 Book *-- BookClient
