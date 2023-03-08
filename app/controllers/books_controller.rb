@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  Client = Books::GoogleBooksApi::Client
+
   before_action :authenticate, only: [:upvote, :downvote, :unvote, :track]
   rescue_from ArgumentError, with: :handle_query_builder
 
@@ -9,7 +11,7 @@ class BooksController < ApplicationController
     max = params.key?('max') ? params["max"].to_i : 10
     offset = params.key?('offset') ? params["offset"].to_i : 0
 
-    @book_client = GoogleBooksApiClient.new
+    @book_client = Client.new
     @books = @book_client.all(max:, offset:)
   end
 
@@ -20,7 +22,7 @@ class BooksController < ApplicationController
     max = params.key?('max') ? params["max"].to_i : 10
     offset = params.key?('offset') ? params["offset"].to_i : 0
 
-    @book_client = GoogleBooksApiClient.new
+    @book_client = Client.new
     @books = @book_client.by_title(title:, max:, offset:)
     render "books/index", format: :json
   end
@@ -29,7 +31,7 @@ class BooksController < ApplicationController
     book_id = params["id"]
     @user = current_user
 
-    @book_client = GoogleBooksApiClient.new
+    @book_client = Client.new
     @book = @book_client.by_id(id: book_id)
 
     # inject the user's vote
