@@ -2,7 +2,7 @@ class GoogleBooksQueryBuilder
   VALID_ORDER_BY = %i[newest relevance].freeze
   VALID_WHERE = { id: :volumeId, title: :intitle, description: :description, subject: :subject }.freeze
   VALID_PRINT_TYPE = %i[all books magazines].freeze
-  VALID_MAX = (10..40)
+  VALID_MAX = (1..40)
 
   def initialize
     @url = Rails.configuration.book_api_url
