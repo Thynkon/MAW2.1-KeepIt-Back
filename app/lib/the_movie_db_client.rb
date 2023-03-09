@@ -4,6 +4,7 @@ require 'async'
 class TheMovieDbClient
 
   def initialize
+    @images_url = Rails.configuration.film_images_url
     @query_builder = TheMovieDbQueryBuilder.new
   end
 
@@ -33,7 +34,9 @@ class TheMovieDbClient
         raise StandardError.new("Element not found") if response.status.code == 404
     end
 
-    JSON.parse(response.body)
+    parsed_response = JSON.parse(response.body)
+
+    add_image_url(parsed_response)
   end
 
   def by_title(type:,title:,page:1)
@@ -70,7 +73,9 @@ class TheMovieDbClient
         raise StandardError.new("Show or season not found") if response.status.code == 404
     end
 
-    JSON.parse(response.body)
+    parsed_response = JSON.parse(response.body)
+
+    add_image_url(parsed_response)
   end
 
   def episode_by_number_in_season(show_id:, season_number:, episode_number:)
@@ -88,18 +93,23 @@ class TheMovieDbClient
         raise StandardError.new("Show or season not found") if response.status.code == 404
     end
 
-    JSON.parse(response.body)
+    parsed_response = JSON.parse(response.body)
+
+    add_image_url(parsed_response)
   end
 
   private
 
   def fetch_response(response)
-      {
-        page: response['page'],
-        total_items: response["total_results"],
-        total_pages: response["total_pages"],
-        results: response["results"]
-      }
+
+    response["results"] = response["results"].map { |content| add_image_url(content)}
+
+    {
+      page: response['page'],
+      total_items: response["total_results"],
+      total_pages: response["total_pages"],
+      results: response["results"]
+    }
   end
 
   def send(query)
@@ -117,4 +127,29 @@ class TheMovieDbClient
 
       response
   end
+  
+  # The API returns only relative paths for images. This method adds the base url to the relative path
+  #
+  # Content can be trees of entities that can all have images. The tree is higly variable but names of keys that are image paths are always the same.
+  # This method is recursive and will add the base url to all images found in the tree.
+  def add_image_url(content)
+    image_keys = ['poster_path','backdrop_path','profile_path','still_path','logo_path']
+
+    content.map { | value |
+      if value.is_a?(Hash) || value.is_a?(Array) then
+        add_image_url(value)
+      else
+        value
+      end
+    }
+    
+    if content.is_a?(Hash) then
+      image_keys.each { |key|
+        content[key] = "#{@images_url}/original#{content[key]}" if content.key?(key) && content[key]
+      } 
+    end
+    
+    content
+  end
+
 end
