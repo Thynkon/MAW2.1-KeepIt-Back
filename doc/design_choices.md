@@ -28,7 +28,6 @@ For this reason we chose [Rodauth](https://rodauth.jeremyevans.net/), an authent
 
 Note that `Rodauth` uses `Sequel` instead of `ActiveRecord`. A detailed explanation written by the person who created the integration gem regarding the reason why the Ruby on Rails integration gem still uses `Sequel` instead of `ActiveRecord` can be found [here](https://janko.io/what-it-took-to-build-a-rails-integration-for-rodauth/#active-record).
 
-
 ## Books API
 
 We use Google's Book api as our data source of books. Even though it is the most popular books api, we still have found some problems.
@@ -102,3 +101,27 @@ However, we cannot filter by some properties such as the cover and description. 
 Thus, we had to implement a [Chain of Responsability](https://refactoring.guru/design-patterns/chain-of-responsibility) that removes any book that is not interesting to us.
 
 The source code can be found under `app/lib/books`. The chain of responsability mentioned above is currently used by the `GoogleBooksApiClient`.
+
+## Serialization
+
+By default, all attributes of any class are part of the serialized output when trying to render a view.
+
+For example, the `/users` route returns all the users we have in our database.
+
+We didn't want the password hash to be part of the output so we had to find a way to set the `serializable attributes` of a Model.
+
+Ruby on Rails [ActiveModelSerialization](https://apidock.com/rails/ActiveModel/Serialization) class defines a method called [serializable_hash](https://apidock.com/rails/ActiveModel/Serialization/serializable_hash) that allows us to define the attributes we want to serialize.
+
+But if you take a look at the examples, we can only specify the attributes we want to serialize when explicitly serializing a model.
+
+This is not what we want. We want to be able to define the attributes we want to serialize for a given model. So we don't have to specify those attributes every time we want to render a view.
+
+Thus, we overrode the `serializable_hash` method of the `ActiveModel::Serialization` class. If you want to use this feature, all you have to do is to set the `serializable_attributes` class attribute like this:
+
+```ruby
+class User < ApplicationRecord
+  include Rodauth::Rails.model
+
+  self.serializable_fields = [:username, :email]
+end
+```
