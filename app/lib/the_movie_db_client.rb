@@ -4,17 +4,16 @@ require 'async'
 class TheMovieDbClient
 
   def initialize
-    @api_url = Rails.configuration.film_api_url
-    @api_version = Rails.configuration.film_api_version
-    @api_key = Rails.application.credentials.the_movie_db_api_3_key
-    @language = language = Rails.configuration.language # Could be replaced by i18n locales but in config file for now
+    @query_builder = TheMovieDbQueryBuilder.new
   end
 
   def popular(type:,page:1)
 
-    raise ArgumentError.new("Invalid content type: #{type}") unless authorized_type?(type)
-
-    query = "#{@api_url}/#{@api_version}/#{type}/popular?api_key=#{@api_key}&language=#{@language}&page=#{page}"
+    query = @query_builder
+                  .popular
+                  .type(type: type)
+                  .where(key: :page, value: page)
+                  .build
 
     response = send(query)
 
@@ -23,9 +22,10 @@ class TheMovieDbClient
 
   def by_id(type:,id:)
 
-    raise ArgumentError.new("Invalid content type: #{type}") unless authorized_type?(type)
-
-    query = "#{@api_url}/#{@api_version}/#{type}/#{id}?api_key=#{@api_key}&language=#{@language}"
+    query = @query_builder
+                  .type(type: type)
+                  .where(key: :id, value: id)
+                  .build
     
     response = send(query)
 
@@ -38,11 +38,14 @@ class TheMovieDbClient
 
   def by_title(type:,title:,page:1)
 
-    raise ArgumentError.new("Invalid content type: #{type}") unless authorized_type?(type)
-
     title = CGI.escape(title)
 
-    query = "#{@api_url}/#{@api_version}/search/#{type}?api_key=#{@api_key}&language=#{@language}&query=#{title}&page=#{page}"
+    query = @query_builder
+                  .search_mode
+                  .type(type: type)
+                  .where(key: :title, value: title)
+                  .where(key: :page, value: page)
+                  .build
 
     response = send(query)
 
@@ -54,7 +57,13 @@ class TheMovieDbClient
   end
 
   def season_by_number(show_id:,season_number:)
-    query = "#{@api_url}/#{@api_version}/tv/#{show_id}/season/#{season_number}?api_key=#{@api_key}&language=#{@language}"
+
+    query = @query_builder
+                  .type(type: :tv)
+                  .where(key: :id, value: show_id)
+                  .season(season_number)
+                  .build
+
     response = send(query)
 
     unless response.status.success?
@@ -65,7 +74,14 @@ class TheMovieDbClient
   end
 
   def episode_by_number_in_season(show_id:, season_number:, episode_number:)
-    query = "#{@api_url}/#{@api_version}/tv/#{show_id}/season/#{season_number}/episode/#{episode_number}?api_key=#{@api_key}&language=#{@language}"
+
+    query = @query_builder
+                  .type(type: :tv)
+                  .where(key: :id, value: show_id)
+                  .season(season_number)
+                  .episode(episode_number)
+                  .build
+
     response = send(query)
 
     unless response.status.success?
@@ -100,9 +116,5 @@ class TheMovieDbClient
     end
 
       response
-  end
-
-  def authorized_type?(type)
-    [:movie,:tv].include?(type)
   end
 end
