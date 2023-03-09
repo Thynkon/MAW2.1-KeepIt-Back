@@ -59,9 +59,13 @@ class TheMovieDbQueryBuilder
     self
   end
 
-  # Check the validity of the builder parameters. 
+  # Checks the validity of the builder parameters. 
+  # 
+  # This method is called by build() to check if everything has been given corrctly to the builder. It's is meant to avoid doing consitency validations in the rest of the code.
   #
-  # Will return true if valid and rise exception otherwise
+  # Will return true if valid and rise exception otherwise.
+  # 
+  # This method use a case pattern matching to avoid using a lot of if and make it easier to read.
   def valid?
     raise BuilderMissingParameterError.new "Missing type parameter." unless @url_params.key?(:type)
 
