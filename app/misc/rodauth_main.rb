@@ -2,9 +2,9 @@ class RodauthMain < Rodauth::Rails::Auth
   configure do
     # List of authentication features that are loaded.
     enable :create_account,
-      :login, :logout, :json, :jwt, :jwt_refresh,
-      :reset_password, :change_password, :change_password_notify,
-      :change_login, :verify_login_change, :close_account
+           :login, :logout, :json, :jwt, :jwt_refresh,
+           :reset_password, :change_password, :change_password_notify,
+           :change_login, :verify_login_change, :close_account
 
     # See the Rodauth documentation for the list of available config options:
     # http://rodauth.jeremyevans.net/documentation.html
@@ -36,12 +36,13 @@ class RodauthMain < Rodauth::Rails::Auth
 
       # When decoding the JWT token, the payload is an array of hashes. The first hash is the payload,
       # the second hash is the header. We want to delete the header from the payload.
-      payload = payload.delete_if{|k| k.has_key?("alg")}.first
+      payload = payload.delete_if { |k| k.has_key?("alg") }.first
       payload["user"] = rails_account.as_json(only: [:id, :email, :username])
 
       token = JWT.encode(payload, Rails.application.secrets.secret_key_base, jwt_algorithm)
-
-      json_response[jwt_access_token_key] = token
+      if authenticated?
+        json_response[jwt_access_token_key] = token
+      end
     end
 
     # Accept only JSON requests.
@@ -78,7 +79,7 @@ class RodauthMain < Rodauth::Rails::Auth
     password_maximum_bytes 72
 
     # Set password when creating account instead of when verifying.
-    #verify_account_set_password? false
+    # verify_account_set_password? false
 
     # Redirect back to originally requested location after authentication.
     # login_return_to_requested_location? true
@@ -98,12 +99,12 @@ class RodauthMain < Rodauth::Rails::Auth
     create_reset_password_email do
       RodauthMailer.reset_password(self.class.configuration_name, account_id, reset_password_key_value)
     end
-    #create_verify_account_email do
+    # create_verify_account_email do
     #  RodauthMailer.verify_account(self.class.configuration_name, account_id, verify_account_key_value)
-    #end
-    #create_verify_login_change_email do |_login|
+    # end
+    # create_verify_login_change_email do |_login|
     #  RodauthMailer.verify_login_change(self.class.configuration_name, account_id, verify_login_change_key_value)
-    #end
+    # end
     create_password_changed_email do
       RodauthMailer.password_changed(self.class.configuration_name, account_id)
     end
@@ -158,6 +159,6 @@ class RodauthMain < Rodauth::Rails::Auth
     # verify_account_grace_period 3.days.to_i
     # reset_password_deadline_interval Hash[hours: 6]
     # verify_login_change_deadline_interval Hash[days: 2]
-    rails_account_model { User}
+    rails_account_model { User }
   end
 end
