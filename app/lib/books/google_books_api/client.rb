@@ -17,12 +17,12 @@ module Books
           # the API. So, that is why we didn't put much effort on the performance side.
           def all(max: 10, offset: 0, subject: nil)
             subjects = %w[
-              authors
-              fiction
-              inspirational
-              love
+              anime
+              comics
+              history
+              humour
+              manga
               poetry
-              romance
             ]
 
             subject = subjects.sample if subject.nil?
