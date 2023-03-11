@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   enum :status, unverified: 1, verified: 2, closed: 3
 
-  self.serializable_fields = [:username, :email]
+  self.serializable_fields = [:id, :username, :email]
 
   has_many :user_votes_books
 
