@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
     private
         def check_user
-            if @current_user != User.find(params[:id])
+            if current_user.id.to_s != params[:id].to_s
                 render json: { errors: 'You are not authorized to access this resource' }, status: :unauthorized
             end
         end
