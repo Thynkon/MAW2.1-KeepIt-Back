@@ -102,6 +102,14 @@ Thus, we had to implement a [Chain of Responsability](https://refactoring.guru/d
 
 The source code can be found under `app/lib/books`. The chain of responsability mentioned above is currently used by the `GoogleBooksApiClient`.
 
+#### Filter algorithm
+
+![Filter algorithm](./diagrams/filter_algorithm.png)
+
+In the image above, we can see how th filter algorithm works. It first tries to fetch 10 books that corresponds to a specific filter.
+
+If, from the 10 books fetched, we have less than 10 books that corresponds to the filter, we fetch more books until we have a full list of books.
+
 ## Serialization
 
 By default, all attributes of any class are part of the serialized output when trying to render a view.
