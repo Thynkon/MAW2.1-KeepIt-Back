@@ -31,5 +31,9 @@ module Keepit
     config.film_api_version = 3
 
     config.api_version = "1.0"
+
+    # Vote system
+    config.upvote = 1
+    config.downvote = -1
   end
 end

@@ -1,8 +1,8 @@
 class UserVotesBook < ApplicationRecord
   belongs_to :user, foreign_key: "user_id"
 
-  @@donwvote = -1
-  @@upvote = 1
+  UPVOTE = Rails.application.config.upvote
+  DOWNVOTE = Rails.application.config.downvote
 
-  validates :vote, presence: true, inclusion: { in: [@@donwvote, @@upvote] }
+  validates :vote, presence: true, inclusion: { in: [UPVOTE, DOWNVOTE] }
 end
