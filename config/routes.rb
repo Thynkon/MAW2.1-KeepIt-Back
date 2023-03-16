@@ -14,6 +14,12 @@ Rails.application.routes.draw do
       get 'search'
       get 'popular'
     end
+
+    member do 
+      put 'upvote'
+      put 'downvote'
+      delete 'unvote'
+    end
   end
 
   resources :shows, only: [:show] do
