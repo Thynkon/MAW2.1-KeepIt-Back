@@ -162,6 +162,8 @@ You can find class diagrams as well other kinds of diagrams under `doc/`.
 
 Explanations about some researches we have done can also be found in `doc/`.
 
+If you want a detailed documentation about the API, you can use the `swagger ui` that is available at `http://localhost:4000/api-docs`.
+
 ## Conventions
 As we implement a REST API, we decided to use the same standard as Google.
 
