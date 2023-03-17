@@ -110,6 +110,17 @@ In the image above, we can see how th filter algorithm works. It first tries to 
 
 If, from the 10 books fetched, we have less than 10 books that corresponds to the filter, we fetch more books until we have a full list of books.
 
+#### Search books by title
+
+Even though Google books api allows us to [search books by a specific parameter](https://developers.google.com/books/docs/v1/using#PerformingSearch),
+sometimes it may return books that do not match the search query.
+
+For example, if we search for `The Lord of the Rings`, we may get books that are not related to the `Lord of the Rings` series.
+We didn't find a reason for this behavior. We think that this might be due to the fact that sometimes the amount of available
+books that match the search query is not enough. Thus, Google's api still tries to return the exact amount of books that we asked.
+
+This has an impact on our unit tests as well as on the user experience.
+
 ## Serialization
 
 By default, all attributes of any class are part of the serialized output when trying to render a view.

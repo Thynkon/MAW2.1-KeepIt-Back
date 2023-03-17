@@ -165,6 +165,7 @@ Explanations about some researches we have done can also be found in `doc/`.
 If you want a detailed documentation about the API, you can use the `swagger ui` that is available at `http://localhost:4000/api-docs`.
 
 ## Conventions
+
 As we implement a REST API, we decided to use the same standard as Google.
 
 The specifications are greatly explained [here](https://google.github.io/styleguide/jsoncstyleguide.xml?showone=YouTube_JSON_API#YouTube_JSON_API). Take a look at the `YouTube JSON API` section.

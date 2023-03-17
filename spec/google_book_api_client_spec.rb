@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe GoogleBooksApiClient do
+describe Books::GoogleBooksApi::Client do
   before do
     @book_client = described_class.new
   end
@@ -64,12 +64,12 @@ describe GoogleBooksApiClient do
 
   describe "by_title" do
     before do
-      @title = "lord"
-      @max = 10
+      @title = "lupin"
+      @max = 5
       @books = @book_client.by_title(title: @title, max: @max)
     end
 
-    it "fetches 10 books whose title contains 'lord'" do
+    it "fetches 5 books whose title contains 'lord'" do
       # Given
 
       # When

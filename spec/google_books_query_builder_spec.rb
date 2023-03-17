@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe GoogleBooksQueryBuilder do
+describe Books::GoogleBooksApi::QueryBuilder do
   before do
-    @builder = GoogleBooksQueryBuilder.new
+    @builder = described_class.new
   end
 
   after do
@@ -52,8 +52,8 @@ describe GoogleBooksQueryBuilder do
     end
 
     it 'raises an error for an invalid max value' do
-      # Values can only be between 10 and 40
-      expect { @builder.max(9) }.to raise_error(ArgumentError)
+      # Values can only be between 1 and 40
+      expect { @builder.max(0) }.to raise_error(ArgumentError)
       expect { @builder.max(41) }.to raise_error(ArgumentError)
     end
   end
@@ -86,14 +86,14 @@ describe GoogleBooksQueryBuilder do
 
     it 'constructs the correct query URL' do
       query_url = @builder.where(:title, 'ruby programming').order_by(:newest).build
-      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes?key=#{@key}&langRestrict=en&q=intitle:ruby+programming&orderBy=newest")
+      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes?key=#{@key}&langRestrict=en&projection=full&printType=books&q=intitle:ruby+programming&orderBy=newest")
     end
 
     it 'constructs the correct query URL to fetch a book by an ID' do
       book_id = 'OXNUEAAAQBAJ'
 
       query_url = @builder.where(:id, book_id).order_by(:newest).build
-      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes/#{book_id}?key=#{@key}&langRestrict=en&orderBy=newest")
+      expect(query_url).to eq("https://www.googleapis.com/books/v1/volumes/#{book_id}?key=#{@key}&langRestrict=en&projection=full&printType=books&orderBy=newest")
     end
   end
 end
