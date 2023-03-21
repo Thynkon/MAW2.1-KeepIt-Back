@@ -27,6 +27,11 @@ Rails.application.routes.draw do
       get 'search'
       get 'popular'
     end
+    member do 
+      put 'upvote'
+      put 'downvote'
+      delete 'unvote'
+    end
     resources :seasons, only: [:show] do
       resources :episodes, only: [:show]
     end

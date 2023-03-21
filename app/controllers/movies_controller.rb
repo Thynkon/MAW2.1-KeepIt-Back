@@ -29,10 +29,12 @@ class MoviesController < ApplicationController
 
   def upvote
     vote(UserVotesMovie::UPVOTE)
+    render plain: "OK"
   end
 
   def downvote
     vote(UserVotesMovie::DOWNVOTE)
+    render plain: "OK"
   end
 
   def unvote
@@ -41,6 +43,7 @@ class MoviesController < ApplicationController
 
     @user_votes_movie = UserVotesMovie.find_by(user_id: @user.id, movie_id:)
     @user_votes_movie.destroy
+    render plain: "OK"
   end
 
   protected

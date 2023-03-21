@@ -23,4 +23,34 @@ class ShowsController < ApplicationController
 
     render "shows/search", format: :json
   end
+
+  def upvote
+    vote(UserVotesShow::UPVOTE)
+    render plain: "OK"
+  end
+
+  def downvote
+    vote(UserVotesShow::DOWNVOTE)
+    render plain: "OK"
+  end
+
+  def unvote
+    show_id = params[:id]
+    @user = current_user
+
+    @user_votes_show = UserVotesShow.find_by(user_id: @user.id, show_id:)
+    @user_votes_show.destroy
+    render plain: "OK"
+  end
+
+  protected
+
+  def vote(vote)
+    show_id = params[:id]
+    @user = current_user
+
+    @user_votes_show = UserVotesShow.find_or_initialize_by(user_id: @user.id, show_id:)
+    @user_votes_show.vote = vote
+    @user_votes_show.save
+  end
 end

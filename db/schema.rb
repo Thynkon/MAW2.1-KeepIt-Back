@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_15_073354) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_17_082218) do
   create_table "user_jwt_refresh_keys", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "key", null: false
@@ -69,6 +69,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_073354) do
     t.index ["user_id"], name: "index_user_votes_movies_on_user_id"
   end
 
+  create_table "user_votes_shows", force: :cascade do |t|
+    t.integer "vote", limit: 1
+    t.integer "user_id", null: false
+    t.string "show_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["show_id"], name: "index_user_votes_shows_on_show_id"
+    t.index ["user_id", "show_id"], name: "index_user_votes_shows_on_user_id_and_show_id", unique: true
+    t.index ["user_id"], name: "index_user_votes_shows_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.integer "status", default: 1, null: false
     t.string "email", null: false
@@ -85,4 +96,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_073354) do
   add_foreign_key "user_verification_keys", "users", column: "id"
   add_foreign_key "user_votes_books", "users"
   add_foreign_key "user_votes_movies", "users"
+  add_foreign_key "user_votes_shows", "users"
 end
