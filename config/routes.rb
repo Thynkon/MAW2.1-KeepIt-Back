@@ -49,4 +49,10 @@ Rails.application.routes.draw do
 
   # Achievements of current user
   resources :achievements, only: [:index, :show]
+
+  # Friendship invitations
+  get '/friendship-invitations', to: 'users#friendship_invitations'
+
+  # Profile
+  get '/profile', to: 'users#profile'
 end

@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :user_votes_books
   has_many :user_has_achievements
   has_many :achievements, through: :user_has_achievements
+  has_many :user_has_friends
 
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
@@ -15,4 +16,29 @@ class User < ApplicationRecord
   validates :password,
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
+
+  def invitations
+    UserHasFriend.not_confirmed.where(friend_id: id)#, confirmed: false)
+  end
+
+  def friends
+    friends_invited = UserHasFriend.confirmed.where(user_id: id).pluck(:friend_id)
+    friends_inviting = UserHasFriend.confirmed.where(friend_id: id).pluck(:user_id)
+
+    ids = friends_invited + friends_inviting
+
+    User.where(id: ids)
+  end
+
+  def friend?(user)
+    UserHasFriend.confirmed.where(user_id: id, friend_id: user.id).exists?
+  end
+
+  def send_invitation(user)
+    UserHasFriend.create(user_id: id, friend_id: user.id)
+  end
+
+  def accept_invitation(user)
+    UserHasFriend.not_confirmed.where(user_id: user.id, friend_id: id).update(confirmed: true)
+  end
 end

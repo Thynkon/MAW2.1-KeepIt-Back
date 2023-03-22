@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authenticate, only: [:update, :destroy]
+    before_action :authenticate, only: [:update, :destroy, :profile, :friendship_invitations]
     before_action :check_user, only: [:update, :destroy]
 
     # GET /users
@@ -38,6 +38,16 @@ class UsersController < ApplicationController
     def destroy
         @user.destroy
         head :no_content
+    end
+
+    # GET /profile
+    def profile
+        @user = current_user
+    end
+
+    def friendship_invitations
+        @user = current_user
+        @invitations = @user.invitations
     end
 
     private
