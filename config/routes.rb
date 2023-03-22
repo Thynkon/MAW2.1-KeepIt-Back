@@ -29,4 +29,6 @@ Rails.application.routes.draw do
   end
 
   resources :users
+
+  get '/achievements', to: 'achievements#index'
 end
