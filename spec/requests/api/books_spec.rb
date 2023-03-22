@@ -29,7 +29,7 @@ RSpec.describe 'Books API', type: :request do
 
   path '/book/{id}' do
     get 'Retrieves a book' do
-      tags 'Book'
+      tags 'Books'
       produces 'application/json'
       parameter name: :id, in: :path, type: :string
 
@@ -44,7 +44,7 @@ RSpec.describe 'Books API', type: :request do
   # Votes
   path '/book/{id}/upvote' do
     put 'Upvotes a book' do
-      tags 'Book'
+      tags 'Books'
       security [Bearer: {}]
       parameter name: :id, in: :path, type: :string
 
@@ -56,7 +56,7 @@ RSpec.describe 'Books API', type: :request do
 
   path '/book/{id}/downvote' do
     put 'Downvotes a book' do
-      tags 'Book'
+      tags 'Books'
       security [Bearer: {}]
       parameter name: :id, in: :path, type: :string
 
@@ -68,7 +68,7 @@ RSpec.describe 'Books API', type: :request do
 
   path '/book/{id}/unvote' do
     delete 'Unvotes a book' do
-      tags 'Book'
+      tags 'Books'
       security [Bearer: {}]
       parameter name: :id, in: :path, type: :string
 
@@ -80,7 +80,7 @@ RSpec.describe 'Books API', type: :request do
 
   path '/book/{id}/unvote' do
     put 'Tracks a book progression' do
-      tags 'Book'
+      tags 'Books'
       security [Bearer: {}]
       parameter name: :id, in: :path, type: :string
 

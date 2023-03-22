@@ -94,6 +94,88 @@
           }
         }
       },
+      "achievements": {
+        "type": "object",
+        "properties": {
+          "apiVersion": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "updated": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "totalItems": {
+                "type": "integer"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "percentage": {
+                      "type": "integer"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "achievement": {
+        "type": "object",
+        "properties": {
+          "apiVersion": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "updated": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "item": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "percentage": {
+                    "type": "integer"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "login_success": {
         "type": "object",
         "properties": {
@@ -151,6 +233,68 @@
     }
   },
   "paths": {
+    "/achievements": {
+      "get": {
+        "summary": "Retrieves a list of achievements of the current user",
+        "tags": [
+          "Achievements"
+        ],
+        "security": [
+          {
+            "Bearer": {
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "achievements found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/achievements"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/achievements/{id}": {
+      "get": {
+        "summary": "Retrieves an achievement",
+        "tags": [
+          "Achievements"
+        ],
+        "security": [
+          {
+            "Bearer": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "achievements found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/achievement"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "summary": "Authenticate",
@@ -364,7 +508,7 @@
       "get": {
         "summary": "Retrieves a book",
         "tags": [
-          "Book"
+          "Books"
         ],
         "parameters": [
           {
@@ -394,7 +538,7 @@
       "put": {
         "summary": "Upvotes a book",
         "tags": [
-          "Book"
+          "Books"
         ],
         "security": [
           {
@@ -423,7 +567,7 @@
       "put": {
         "summary": "Downvotes a book",
         "tags": [
-          "Book"
+          "Books"
         ],
         "security": [
           {
@@ -452,7 +596,7 @@
       "delete": {
         "summary": "Unvotes a book",
         "tags": [
-          "Book"
+          "Books"
         ],
         "security": [
           {
@@ -479,7 +623,7 @@
       "put": {
         "summary": "Tracks a book progression",
         "tags": [
-          "Book"
+          "Books"
         ],
         "security": [
           {
