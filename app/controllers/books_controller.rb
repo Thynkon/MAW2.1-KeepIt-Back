@@ -1,11 +1,8 @@
 class BooksController < ApplicationController
   Client = Books::GoogleBooksApi::Client
 
-  before_action :authenticate, only: [:upvote, :downvote, :unvote, :track]
+  before_action :authenticate, only: [:upvote, :downvote, :unvote]
   rescue_from ArgumentError, with: :handle_query_builder
-
-  UP_VOTE = 1
-  DOWN_VOTE = -1
 
   def index
     max = params.key?('max') ? params["max"].to_i : 10
@@ -40,11 +37,11 @@ class BooksController < ApplicationController
   end
 
   def upvote
-    vote_on_a_book(UP_VOTE)
+    vote_on_a_book(UserVotesBook::UPVOTE)
   end
 
   def downvote
-    vote_on_a_book(DOWN_VOTE)
+    vote_on_a_book(UserVotesBook::DOWNVOTE)
   end
 
   def unvote
