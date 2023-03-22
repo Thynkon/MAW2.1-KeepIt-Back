@@ -28,7 +28,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users
+  resources :users do
+    resources :achievements, only: [:index]
+  end
 
-  get '/achievements', to: 'achievements#index'
+  # Achievements of current user
+  resources :achievements, only: [:index, :show]
 end
