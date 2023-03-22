@@ -73,6 +73,54 @@ RSpec.configure do |config|
               }
             },
           },
+          achievements: {
+            type: 'object',
+            properties: {
+              apiVersion: { type: :string },
+              data: {
+                type: :object,
+                properties: {
+                  updated: { type: :string, format: 'date-time' },
+                  totalItems: { type: :integer },
+                  items: {
+                    type: :array,
+                    items: {
+                      type: :object,
+                      properties: {
+                        id: { type: :integer },
+                        title: { type: :string },
+                        description: { type: :string },
+                        percentage: { type: :integer },
+                        created_at: { type: :string, format: 'date-time' },
+                      }
+                    }
+                  }
+                }
+              }
+            },
+          },
+          achievement: {
+            type: 'object',
+            properties: {
+              apiVersion: { type: :string },
+              data: {
+                type: :object,
+                properties: {
+                  updated: { type: :string, format: 'date-time' },
+                  item: {
+                    type: :object,
+                    properties: {
+                      id: { type: :integer },
+                      title: { type: :string },
+                      description: { type: :string },
+                      percentage: { type: :integer },
+                      created_at: { type: :string, format: 'date-time' },
+                    }
+                  }
+                }
+              }
+            },
+          },
           login_success: {
             type: :object,
             properties: {
