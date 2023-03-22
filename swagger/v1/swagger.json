@@ -647,6 +647,56 @@
           }
         }
       }
+    },
+    "/users": {
+      "get": {
+        "summary": "Retrieves a list of books",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "books found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/books"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Retrieves a book",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "books found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/book"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [
