@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       put 'upvote'
       put 'downvote'
       delete 'unvote'
+      put 'track'
     end
   end
 
@@ -39,7 +40,11 @@ Rails.application.routes.draw do
     end
     
     resources :seasons, only: [:show] do
-      resources :episodes, only: [:show]
+      resources :episodes, only: [:show] do
+        member do
+          put 'track'
+        end
+      end
     end
   end
 
