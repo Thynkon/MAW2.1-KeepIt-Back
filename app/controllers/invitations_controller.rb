@@ -15,7 +15,7 @@ class InvitationsController < ApplicationController
       @user.send_invitation(@friend)
   end
 
-  # POST /invitations/{invitation_id}/accept
+  # POST /invitations/{id}/accept
   def accept
       @user = current_user
       @invitation = UserHasFriend.find(params[:id])
@@ -26,6 +26,18 @@ class InvitationsController < ApplicationController
           handle_authorization_error
       end
   end
+
+    # DELETE /invitations/{id}
+    def destroy
+        @user = current_user
+        @invitation = UserHasFriend.find(params[:id])
+
+        if @user == @invitation.friend
+            @user.deny_invitation(@invitation)
+        else
+            handle_authorization_error
+        end
+    end
 
   protected
   def handle_authorization_error

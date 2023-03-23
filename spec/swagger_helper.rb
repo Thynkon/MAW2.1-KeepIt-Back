@@ -121,6 +121,60 @@ RSpec.configure do |config|
               }
             },
           },
+          invitations: {
+            type: 'object',
+            properties: {
+              apiVersion: { type: :string },
+              data: {
+                type: :object,
+                properties: {
+                  updated: { type: :string, format: 'date-time' },
+                  totalItems: { type: :integer },
+                  items: {
+                    type: :array,
+                    items: {
+                      type: :object,
+                      properties: {
+                        id: { type: :integer },
+                        friend: { type: :object,
+                          properties: {
+                            id: { type: :integer },
+                            email: { type: :string },
+                            username: { type: :string },
+                          }
+                        },
+                        sent_at: { type: :string, format: 'date-time' },
+                      }
+                    }
+                  }
+                }
+              }
+            },
+          },
+          friends: {
+            type: 'object',
+            properties: {
+              apiVersion: { type: :string },
+              data: {
+                type: :object,
+                properties: {
+                  updated: { type: :string, format: 'date-time' },
+                  totalItems: { type: :integer },
+                  items: {
+                    type: :array,
+                    items: {
+                      type: :object,
+                      properties: {
+                        id: { type: :integer },
+                        email: { type: :string },
+                        username: { type: :string },
+                      }
+                    }
+                  }
+                }
+              }
+            },
+          },
           login_success: {
             type: :object,
             properties: {

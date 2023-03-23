@@ -41,4 +41,8 @@ class User < ApplicationRecord
   def accept_invitation(invitation)
     invitation.update(confirmed: true)
   end
+
+  def deny_invitation(invitation)
+    invitation.destroy
+  end
 end
