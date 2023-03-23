@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
+
   resources :books, only: [:index, :show] do
     collection do
       get 'search'
@@ -45,14 +46,18 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :achievements, only: [:index]
+
+    # Invite friends
+    member do
+      get 'friends'
+      # Friendship invitations
+      get 'invitations', to: 'invitations#index'
+      post 'invite', to: 'invitations#create'
+    end
   end
+
+  put '/invitations/:id/accept', to: 'invitations#accept'
 
   # Achievements of current user
   resources :achievements, only: [:index, :show]
-
-  # Friendship invitations
-  get '/friendship-invitations', to: 'users#friendship_invitations'
-
-  # Profile
-  get '/profile', to: 'users#profile'
 end

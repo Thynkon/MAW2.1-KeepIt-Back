@@ -5,7 +5,7 @@ json.data do
   json.totalItems @invitations.length
   json.items  @invitations.map do |invitation|
     json.id invitation[:id]
-    json.friend invitation.friend
+    json.friend invitation.user
     json.sent_at invitation[:created_at]
   end
 end

@@ -38,7 +38,7 @@ class User < ApplicationRecord
     UserHasFriend.create(user_id: id, friend_id: user.id)
   end
 
-  def accept_invitation(user)
-    UserHasFriend.not_confirmed.where(user_id: user.id, friend_id: id).update(confirmed: true)
+  def accept_invitation(invitation)
+    invitation.update(confirmed: true)
   end
 end

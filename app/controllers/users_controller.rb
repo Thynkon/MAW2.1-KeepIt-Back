@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authenticate, only: [:update, :destroy, :profile, :friendship_invitations]
+    before_action :authenticate, only: [:update, :destroy, :friends]
     before_action :check_user, only: [:update, :destroy]
 
     # GET /users
@@ -40,14 +40,9 @@ class UsersController < ApplicationController
         head :no_content
     end
 
-    # GET /profile
-    def profile
-        @user = current_user
-    end
-
-    def friendship_invitations
-        @user = current_user
-        @invitations = @user.invitations
+    # GET /users/{id}/friends
+    def friends
+        @user = User.find(params[:id])
     end
 
     private
