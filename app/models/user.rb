@@ -6,6 +6,8 @@ class User < ApplicationRecord
   self.serializable_fields = [:id, :username, :email]
 
   has_many :user_votes_books
+  has_many :user_has_achievements
+  has_many :achievements, through: :user_has_achievements
 
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true

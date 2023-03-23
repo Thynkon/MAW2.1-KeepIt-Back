@@ -67,3 +67,5 @@ gem 'rack-cors'
 gem 'jwt'
 
 gem "rodauth-rails", "~> 1.7"
+
+gem "faker", "~> 3.1"
