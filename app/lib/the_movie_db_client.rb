@@ -59,12 +59,12 @@ class TheMovieDbClient
     fetch_response(JSON.parse(response.body))
   end
 
-  def season_by_number(show_id:,season_number:)
+  def season_by_number(show_id:,season_id:)
 
     query = @query_builder
                   .type(type: :tv)
                   .where(key: :id, value: show_id)
-                  .season(season_number)
+                  .season(season_id)
                   .build
 
     response = send(query)
@@ -78,13 +78,13 @@ class TheMovieDbClient
     add_image_url(parsed_response)
   end
 
-  def episode_by_number_in_season(show_id:, season_number:, episode_number:)
+  def episode_by_number_in_season(show_id:, season_id:, episode_id:)
 
     query = @query_builder
                   .type(type: :tv)
                   .where(key: :id, value: show_id)
-                  .season(season_number)
-                  .episode(episode_number)
+                  .season(season_id)
+                  .episode(episode_id)
                   .build
 
     response = send(query)

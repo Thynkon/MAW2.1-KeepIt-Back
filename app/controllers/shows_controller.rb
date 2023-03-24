@@ -1,5 +1,8 @@
 class ShowsController < ApplicationController
+  before_action :setup_user_variables
+
   def initialize
+    super
     @tmdb_client = TheMovieDbClient.new
   end
 
@@ -13,7 +16,9 @@ class ShowsController < ApplicationController
   end
 
   def show
-    @show = @tmdb_client.by_id(type: :tv, id:params[:id])
+    show_id = params[:id]
+    @show = @tmdb_client.by_id(type: :tv, id:show_id)
+    @last_watched_episode = last_watched_episode_for_show(@user&.id, show_id)
   end
 
   def popular
@@ -36,7 +41,6 @@ class ShowsController < ApplicationController
 
   def unvote
     show_id = params[:id]
-    @user = current_user
 
     @user_votes_show = UserVotesShow.find_by(user_id: @user.id, show_id:)
     @user_votes_show.destroy
@@ -47,10 +51,17 @@ class ShowsController < ApplicationController
 
   def vote(vote)
     show_id = params[:id]
-    @user = current_user
 
     @user_votes_show = UserVotesShow.find_or_initialize_by(user_id: @user.id, show_id:)
     @user_votes_show.vote = vote
     @user_votes_show.save
+  end
+
+  def setup_user_variables
+    @user = current_user
+  end
+
+  def last_watched_episode_for_show(user_id,show_id)
+    UserWatchesEpisode.where(user_id:, show_id:).order("season_id DESC, episode_id DESC").first
   end
 end

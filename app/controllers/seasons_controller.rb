@@ -4,6 +4,6 @@ class SeasonsController < ApplicationController
   end
 
   def show
-    @season = @tmdb_client.season_by_number(show_id:params[:show_id], season_number:params[:id])
+    @season = @tmdb_client.season_by_number(show_id:params[:show_id], season_id:params[:id])
   end
 end

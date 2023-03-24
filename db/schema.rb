@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_17_082218) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_23_081958) do
   create_table "user_jwt_refresh_keys", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "key", null: false
@@ -80,6 +80,30 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_082218) do
     t.index ["user_id"], name: "index_user_votes_shows_on_user_id"
   end
 
+  create_table "user_watches_episodes", force: :cascade do |t|
+    t.integer "time"
+    t.integer "user_id", null: false
+    t.integer "show_id", null: false
+    t.integer "season_id", null: false
+    t.integer "episode_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["episode_id"], name: "index_user_watches_episodes_on_episode_id"
+    t.index ["season_id"], name: "index_user_watches_episodes_on_season_id"
+    t.index ["show_id"], name: "index_user_watches_episodes_on_show_id"
+    t.index ["user_id"], name: "index_user_watches_episodes_on_user_id"
+  end
+
+  create_table "user_watches_movies", force: :cascade do |t|
+    t.integer "time"
+    t.integer "user_id", null: false
+    t.integer "movie_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_user_watches_movies_on_movie_id"
+    t.index ["user_id"], name: "index_user_watches_movies_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.integer "status", default: 1, null: false
     t.string "email", null: false
@@ -97,4 +121,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_082218) do
   add_foreign_key "user_votes_books", "users"
   add_foreign_key "user_votes_movies", "users"
   add_foreign_key "user_votes_shows", "users"
+  add_foreign_key "user_watches_episodes", "users"
+  add_foreign_key "user_watches_movies", "users"
 end
