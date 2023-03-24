@@ -133,7 +133,14 @@ class TheMovieDbClient
   # Content can be trees of entities that can all have images. The tree is higly variable but names of keys that are image paths are always the same.
   # This method is recursive and will add the base url to all images found in the tree.
   def add_image_url(content)
-    image_keys = ['poster_path','backdrop_path','profile_path','still_path','logo_path']
+
+    image_keys_sizes = {
+      'poster_path' => 'w185',
+      'backdrop_path' => 'w300',
+      'profile_path' => 'w185',
+      'still_path' => 'w185',
+      'logo_path' => 'w185'
+    }
 
     content.map { | value |
       if value.is_a?(Hash) || value.is_a?(Array) then
@@ -144,9 +151,9 @@ class TheMovieDbClient
     }
     
     if content.is_a?(Hash) then
-      image_keys.each { |key|
-        content[key] = "#{@images_url}/original#{content[key]}" if content.key?(key) && content[key]
-      } 
+      image_keys_sizes.each { |key, size|
+        content[key] = "#{@images_url}/#{size}#{content[key]}" if content.key?(key) && content[key]
+      }
     end
     
     content
