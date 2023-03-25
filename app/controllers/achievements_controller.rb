@@ -17,4 +17,9 @@ class AchievementsController < ApplicationController
 
     @achievements = user.achievements.limit(max).offset(offset * max)
   end
+
+  def count
+    @user = User.find(params[:id])
+    @count = @user.achievements.count
+  end
 end

@@ -50,6 +50,9 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :achievements, only: [:index]
+    member do
+      get 'achievements/count', to: 'achievements#count'
+    end
   end
 
   # Achievements of current user
