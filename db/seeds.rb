@@ -12,17 +12,28 @@ armand = User.create!(username: "armand", email: "armand@mail.com", password: "p
 anthony = User.create!(username: "anthony", email: "anthony@mail.com", password: "password", status: "verified")
 theo = User.create!(username: "theo", email: "theo@mail.com", password: "password", status: "verified")
 helene = User.create!(username: "helene", email: "helene@mail.com", password: "password", status: "verified")
+demo = User.create!(username: "demo", email: "demo@mail.com", password: "password", status: "verified")
 
 users = User.all
 
 achievements = []
 
-10.times do
-    achievements << Achievement.create!(title: Faker::Book.title, description: Faker::Lorem.paragraph, percentage: rand(1..100))
+100.times do |i|
+    achievements << Achievement.create!(title: "#{Faker::Book.title}#{i}" , description: Faker::Lorem.paragraph, percentage: rand(1..100))
 end
 
+# Add one achievement to each user (except demo)
 users.each do |user|
-    user.achievements << achievements.sample
-    user.save!
+    if user.username != "demo"
+        user.achievements << achievements.sample
+        user.save!
+    end
 end
+
+# Add all achivements to demo user
+Achievement.all.each do |achievement|
+    demo.achievements << achievement
+    demo.save!
+end
+
 
