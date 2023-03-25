@@ -8,7 +8,7 @@ class InvitationsController < ApplicationController
   end
 
   # POST /users/{id}/invite
-  def invite
+  def create
       @user = current_user
       @friend = User.find(params[:id])
 
