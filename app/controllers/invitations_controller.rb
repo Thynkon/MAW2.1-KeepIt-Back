@@ -12,7 +12,7 @@ class InvitationsController < ApplicationController
       @user = current_user
       @friend = User.find(params[:id])
 
-      @user.send_invitation(@friend)
+      @invitation = @user.send_invitation(@friend)
   end
 
   # POST /invitations/{id}/accept
