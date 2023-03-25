@@ -56,4 +56,8 @@ class User < ApplicationRecord
   def friend?(user)
       friends.include?(user)
   end
+
+  def friendship(user)
+    UserHasFriend.where(user_id: id, friend_id: user.id).or(UserHasFriend.where(user_id: user.id, friend_id: id)).first
+  end
 end

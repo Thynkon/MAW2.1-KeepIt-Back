@@ -8,7 +8,11 @@ json.data do
     json.username @user.username
 
     if @current_user.friend?(@user)
-      json.is_friend true
+      friendship = @current_user.friendship(@user)
+      json.friendship do
+        json.id friendship.id
+        json.created_at friendship.created_at
+      end
     else
       if @received_invitation != nil
         json.received_invitation do
