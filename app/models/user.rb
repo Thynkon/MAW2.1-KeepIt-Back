@@ -17,7 +17,7 @@ class User < ApplicationRecord
             if: -> { new_record? || !password.nil? }
 
   def invitations
-    UserHasFriend.not_confirmed.where(friend_id: id)#, confirmed: false)
+    UserHasFriend.not_confirmed.where(friend_id: id)
   end
 
   def friends
