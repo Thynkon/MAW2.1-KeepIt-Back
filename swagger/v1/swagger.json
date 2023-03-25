@@ -864,7 +864,7 @@
         }
       }
     },
-    "/invitation/{id}": {
+    "/invitations/{id}": {
       "delete": {
         "summary": "Denies an invitation",
         "tags": [

@@ -57,7 +57,7 @@ Rails.application.routes.draw do
   end
 
   put '/invitations/:id/accept', to: 'invitations#accept'
-  delete '/invitations/:id', to: 'invitations#accept'
+  delete '/invitations/:id', to: 'invitations#destroy'
 
   # Achievements of current user
   resources :achievements, only: [:index, :show]

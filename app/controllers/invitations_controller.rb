@@ -27,17 +27,17 @@ class InvitationsController < ApplicationController
       end
   end
 
-    # DELETE /invitations/{id}
-    def destroy
-        @user = current_user
-        @invitation = UserHasFriend.find(params[:id])
+  # DELETE /invitations/{id}
+  def destroy
+      @user = current_user
+      @invitation = UserHasFriend.find(params[:id])
 
-        if @user == @invitation.friend
-            @user.deny_invitation(@invitation)
-        else
-            handle_authorization_error
-        end
-    end
+      if @user == @invitation.friend
+          @user.deny_invitation(@invitation)
+      else
+          handle_authorization_error
+      end
+  end
 
   protected
   def handle_authorization_error
