@@ -7,7 +7,7 @@ json.data do
     json.id achievement[:id]
     json.title achievement[:title]
     json.description achievement[:description]
-    json.percentage achievement[:percentage]
+    json.percentage rand(0..100) # TODO: replace with real value
     json.created_at achievement[:created_at]
   end
 end

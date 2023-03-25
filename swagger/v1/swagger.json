@@ -176,6 +176,92 @@
           }
         }
       },
+      "invitations": {
+        "type": "object",
+        "properties": {
+          "apiVersion": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "updated": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "totalItems": {
+                "type": "integer"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "friend": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "sent_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "friends": {
+        "type": "object",
+        "properties": {
+          "apiVersion": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "updated": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "totalItems": {
+                "type": "integer"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "login_success": {
         "type": "object",
         "properties": {
@@ -648,19 +734,35 @@
         }
       }
     },
-    "/users": {
+    "/users/{id}/invitations": {
       "get": {
-        "summary": "Retrieves a list of books",
+        "summary": "Retrieves a list of invitations",
         "tags": [
-          "Users"
+          "Invitations"
+        ],
+        "security": [
+          {
+            "Bearer": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
         ],
         "responses": {
           "200": {
-            "description": "books found",
+            "description": "invitations found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/books"
+                  "$ref": "#/components/schemas/invitations"
                 }
               }
             }
@@ -668,9 +770,145 @@
         }
       }
     },
+    "/users/{id}/friends": {
+      "get": {
+        "summary": "Retrieves a list of friends",
+        "tags": [
+          "Invitations"
+        ],
+        "security": [
+          {
+            "Bearer": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "friends found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/friends"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/invite": {
+      "post": {
+        "summary": "Invites a friend",
+        "tags": [
+          "Invitations"
+        ],
+        "security": [
+          {
+            "Bearer": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "invitation sent"
+          }
+        }
+      }
+    },
+    "/invitation/{id}/accept": {
+      "put": {
+        "summary": "Accepts an invitation",
+        "tags": [
+          "Invitations"
+        ],
+        "security": [
+          {
+            "Bearer": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "invitation sent"
+          }
+        }
+      }
+    },
+    "/invitations/{id}": {
+      "delete": {
+        "summary": "Denies an invitation",
+        "tags": [
+          "Invitations"
+        ],
+        "security": [
+          {
+            "Bearer": {
+            }
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "invitation denied"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Retrieves a list of users",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "users found"
+          }
+        }
+      }
+    },
     "/users/{id}": {
       "get": {
-        "summary": "Retrieves a book",
+        "summary": "Retrieves a user",
         "tags": [
           "Users"
         ],
@@ -686,14 +924,7 @@
         ],
         "responses": {
           "200": {
-            "description": "books found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/book"
-                }
-              }
-            }
+            "description": "user found"
           }
         }
       }
