@@ -19,8 +19,8 @@ class RodauthMain < Rodauth::Rails::Auth
 
     jwt_refresh_token_table :user_jwt_refresh_keys
     jwt_refresh_token_account_id_column :user_id
-    # Default expiration time is 1 hour
-    jwt_access_token_period 3600
+    # Default expiration time is 6 hours
+    jwt_access_token_period 3600 * 6
 
     # After reading Rodauth's source and documentation, I didn't find a way to
     # add custom data to the JWT token. So, I'm using the 'session_jwt' method (https://rodauth.jeremyevans.net/rdoc/files/doc/jwt_rdoc.html#label-Auth+Methods)

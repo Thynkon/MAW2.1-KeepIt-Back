@@ -11,6 +11,11 @@ class UsersController < ApplicationController
     def show
       @user = User.find(params[:id])
       @current_user = current_user
+
+      if @current_user != nil && @current_user != @user
+        @received_invitation = @user.invitation_from(@current_user)
+        @sent_invitation = @current_user.invitation_from(@user)
+      end
     end
 
     # POST /users

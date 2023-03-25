@@ -50,6 +50,10 @@ class User < ApplicationRecord
     UserHasFriend.where(user_id: id, friend_id: user.id).exists?
   end
 
+  def invitation_from(user)
+    UserHasFriend.where(user_id: user.id, friend_id: id).first
+  end
+
   def friend?(user)
       friends.include?(user)
   end
