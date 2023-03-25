@@ -45,4 +45,12 @@ class User < ApplicationRecord
   def deny_invitation(invitation)
     invitation.destroy
   end
+
+  def has_invited?(user)
+    UserHasFriend.where(user_id: id, friend_id: user.id).exists?
+  end
+
+  def friend?(user)
+      friends.include?(user)
+  end
 end
