@@ -32,7 +32,7 @@ class InvitationsController < ApplicationController
       @user = current_user
       @invitation = UserHasFriend.find(params[:id])
 
-      if @user == @invitation.friend
+      if @user == @invitation.friend || @user == @invitation.user
           @user.deny_invitation(@invitation)
       else
           handle_authorization_error
