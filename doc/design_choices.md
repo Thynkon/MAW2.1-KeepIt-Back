@@ -121,6 +121,20 @@ books that match the search query is not enough. Thus, Google's api still tries 
 
 This has an impact on our unit tests as well as on the user experience.
 
+### Duplicated books
+
+When we search for a book, lets say `Arsène Lupin` we get multiple results. Google's Book API returns multiple times the same book for the given request.
+
+```sh
+curl -s -L 'https://www.googleapis.com/books/v1/volumes?key=<API_KEY>&langRestrict=en&projection=full&printType=books&q=intitle:ars%C3%A8ne+lupin&maxResults=12&orderBy=relevance' | grep '"id": "hO33LPmTQGoC"' | wc -l
+
+2
+```
+
+By typing the commands above, we can see that the book `Arsène Lupin , Gentleman-Thief` is returned twice (its id is `hO33LPmTQGoC`).
+
+Thus, we may get duplicated books in our search results.
+
 ## Serialization
 
 By default, all attributes of any class are part of the serialized output when trying to render a view.
