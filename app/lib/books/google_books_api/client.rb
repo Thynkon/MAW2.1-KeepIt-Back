@@ -1,5 +1,6 @@
 require 'async'
 require 'pp'
+require 'http'
 
 QueryBuilder = Books::GoogleBooksApi::QueryBuilder
 CoverFilter = Books::GoogleBooksApi::Filters::CoverFilter
@@ -41,7 +42,6 @@ module Books
                        .build
 
             books = send(query)
-
             books = books["items"]
 
             # Since Google Books API does not offer a way to filter books by cover and description
@@ -119,8 +119,13 @@ module Books
                   .get(query)
             end
 
-            response = task.wait
-            JSON.parse(response.body)
+            begin
+              response = task.wait
+              JSON.parse(response.body)
+            rescue HTTP::Error => e
+              Rails.logger.error e.message
+              raise
+            end
           end
       end
     end

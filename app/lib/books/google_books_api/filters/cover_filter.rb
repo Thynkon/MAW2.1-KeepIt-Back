@@ -20,8 +20,7 @@ module Books
               response = task.wait
               parsed_response = JSON.parse(response.body)["items"]
 
-              new_books_with_cover = filter_books(parsed_response, filter: :description,
-                                                                   length: number_of_books_without_cover)
+              new_books_with_cover = filter_books(parsed_response, filter: :cover, length: number_of_books_without_cover)
               books_with_cover.concat(new_books_with_cover)
             end
             books = books_with_cover

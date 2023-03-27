@@ -1,8 +1,11 @@
+require 'http'
+
 class BooksController < ApplicationController
   Client = Books::GoogleBooksApi::Client
 
   before_action :authenticate, only: [:upvote, :downvote, :unvote]
   rescue_from ArgumentError, with: :handle_query_builder
+  rescue_from HTTP::Error, with: :handle_http_error
 
   def index
     max = params.key?('max') ? params["max"].to_i : 10
@@ -67,6 +70,10 @@ class BooksController < ApplicationController
   protected
   def handle_query_builder(exception)
     render "errors/error", format: :json, locals: { exception: exception, code: 400}, status: :bad_request
+  end
+
+  def handle_http_error(exception)
+    render "errors/error", format: :json, locals: { exception: exception, code: 500}, status: :internal_server_error
   end
 
   def vote_on_a_book(vote)
