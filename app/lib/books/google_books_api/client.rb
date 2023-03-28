@@ -79,7 +79,17 @@ module Books
                        .build
 
             response = send(query)
-            format_response(response["items"])
+            books = response["items"]
+
+            # Since Google Books API does not offer a way to filter books by cover and description
+            # we need to filter them ourselves.
+            cover_filter = CoverFilter.new(max:, qb: @qb)
+            description_filter = DescriptionFilter.new(max:, qb: @qb)
+
+            cover_filter.next_handler(description_filter)
+            books = cover_filter.handle(books)
+
+            format_response(books)
           end
 
           private
