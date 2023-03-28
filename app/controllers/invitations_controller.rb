@@ -13,6 +13,11 @@ class InvitationsController < ApplicationController
     @user = current_user
     @friend = User.find(params[:id])
 
+    # Since the send_invitation creates a new entry, we create a new instance of the model
+    # in order to check permissions using the corresponding policy
+    @invitation = UserHasFriend.new(user_id: @user.id, friend_id: @friend.id)
+    authorize @invitation
+
     @invitation = @user.send_invitation(@friend)
   end
 

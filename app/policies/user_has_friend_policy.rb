@@ -7,6 +7,10 @@ class UserHasFriendPolicy < ApplicationPolicy
     @invitation = invitation
   end
 
+  def create?
+    @user == @invitation.user && @user != @invitation.friend
+  end
+
   def accept?
     @user == @invitation.friend
   end
