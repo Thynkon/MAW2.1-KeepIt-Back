@@ -32,7 +32,7 @@ class MoviesController < ApplicationController
     max = params.key?('max') ? params['max'].to_i : 10
 
     @movies = @tmdb_client.popular(type: :movie, page:page)
-    @movies[:results] = @movies[:results].take(5)
+    @movies[:results] = @movies[:results].take(max)
 
     render "movies/search", format: :json
   end
