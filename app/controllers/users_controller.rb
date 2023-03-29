@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authenticate, only: [:update, :destroy, :friends]
+    before_action :authenticate, only: [:update, :destroy]
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
     # GET /users

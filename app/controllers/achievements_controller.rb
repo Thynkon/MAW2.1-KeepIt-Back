@@ -1,6 +1,4 @@
 class AchievementsController < ApplicationController
-  before_action :authenticate
-
   def index
     max = params.key?('max') ? params["max"].to_i : 10
     # The offset is exposed to the API as a 1-based index, but the database
