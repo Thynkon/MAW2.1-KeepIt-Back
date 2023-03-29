@@ -69,6 +69,7 @@ class BooksController < ApplicationController
 
   protected
   def handle_query_builder(exception)
+    Rails.logger.error exception
     render "errors/error", format: :json, locals: { exception: exception, code: 400}, status: :bad_request
   end
 

@@ -1,7 +1,6 @@
 class UserHasFriendPolicy < ApplicationPolicy
   attr_reader :user, :invitation
 
-  # _record in this example will just be :dashboard
   def initialize(user, invitation)
     @user = user
     @invitation = invitation

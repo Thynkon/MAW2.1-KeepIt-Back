@@ -1,13 +1,13 @@
 class UsersController < ApplicationController
     before_action :authenticate, only: [:update, :destroy, :friends]
-    before_action :check_user, only: [:update, :destroy]
+    rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
     # GET /users
     def index
       @users = User.all
     end
-    
-    # GET /users/username
+
+    # GET /users/{id}
     def show
       @user = User.find(params[:id])
       @current_user = current_user
@@ -29,19 +29,24 @@ class UsersController < ApplicationController
       end
     end
 
-    # PATCH/PUT /users/1
+    # PATCH/PUT /users/{id}
     def update
       @user = User.find(params[:id])
+      authorize @user
+
       if @user.update(user_params)
         @current_user = current_user
         render :show
       else
-          render json: @user.errors, status: :unprocessable_entity
+        render json: @user.errors, status: :unprocessable_entity
       end
     end
 
-    # DELETE /users/1
+    # DELETE /users/{id}
     def destroy
+      @user = User.find(params[:id])
+      authorize @user
+
       @user.destroy
       head :no_content
     end
@@ -52,10 +57,8 @@ class UsersController < ApplicationController
     end
 
     private
-      def check_user
-        if current_user.id.to_s != params[:id].to_s
-            render json: { errors: 'You are not authorized to access this resource' }, status: :unauthorized
-        end
+      def handle_http_error(exception)
+        render "errors/error", format: :json, locals: { exception: exception, code: 401}, status: :unauthorized
       end
 
       def user_params
