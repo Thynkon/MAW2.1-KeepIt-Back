@@ -14,6 +14,17 @@ class RodauthMain < Rodauth::Rails::Auth
     # Defaults to Rails `secret_key_base`, but you can use your own secret key.
     # hmac_secret "b5154a73b98f5ac56999cd558478cb4a2e9c3ed1912d4cf348c359c3c048c768cef51aaf1bbd9c3414b02754cb9d040b0dc18c26d86d6d8b488d5cc1e6011c3f"
 
+    # ==> Account
+    before_create_account do
+      # Validate presence of the name field
+      unless username = param_or_nil("username")
+        throw_error_status(422, "username", "must be present")
+      end
+
+      # Assign the new field to the account record
+      account[:username] = username
+    end
+
     # Set JWT secret, which is used to cryptographically protect the token.
     jwt_secret Rails.application.secrets.secret_key_base
 
@@ -32,7 +43,7 @@ class RodauthMain < Rodauth::Rails::Auth
       #       session_key :session_key, :account_id
       #       session_key :authenticated_by_session_key, :authenticated_by
       # Thus, those values must be present in the JWT token.
-      payload = JWT.decode(session_jwt, Rails.application.secrets.secret_key_base, true, lgorithm: jwt_algorithm)
+      payload = JWT.decode(session_jwt, Rails.application.secrets.secret_key_base, true, algorithm: jwt_algorithm)
 
       # When decoding the JWT token, the payload is an array of hashes. The first hash is the payload,
       # the second hash is the header. We want to delete the header from the payload.
@@ -90,6 +101,10 @@ class RodauthMain < Rodauth::Rails::Auth
 
     # Delete the account record when the user has closed their account.
     # delete_account_on_close? true
+
+    reset_password_table :user_password_reset_keys
+    verify_login_change_table :user_login_change_keys
+    verify_login_change_table :user_login_change_keys
 
     # Redirect to the app from login and registration pages if already logged in.
     # already_logged_in { redirect login_redirect }
