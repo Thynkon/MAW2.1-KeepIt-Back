@@ -19,6 +19,8 @@ class ShowsController < ApplicationController
     show_id = params[:id]
     @show = @tmdb_client.by_id(type: :tv, id:show_id)
     @last_watched_episode = last_watched_episode_for_show(@user&.id, show_id)
+    # inject the user's vote and track
+    @user_votes_show = UserVotesShow.find_by(user_id: @user&.id, show_id:)
   end
 
   def popular

@@ -38,6 +38,7 @@ json.data do
 
     if @user
       json.last_watched_episode @last_watched_episode ? @last_watched_episode : nil
+      json.user_vote @user_votes_show ? @user_votes_show.vote : 0
     end
   end
 end
