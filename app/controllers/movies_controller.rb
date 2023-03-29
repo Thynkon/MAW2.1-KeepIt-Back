@@ -29,8 +29,10 @@ class MoviesController < ApplicationController
 
   def popular
     page = params.key?(:page) ? params[:page] : 1
+    max = params.key?('max') ? params['max'].to_i : 10
 
     @movies = @tmdb_client.popular(type: :movie, page:page)
+    @movies[:results] = @movies[:results].take(5)
 
     render "movies/search", format: :json
   end
