@@ -50,7 +50,7 @@ RSpec.configure do |config|
               }
             },
           },
-          movie: {
+          movies: {
             type: 'object',
             properties: {
               apiVersion: { type: :string },
@@ -124,7 +124,7 @@ RSpec.configure do |config|
               }
             }
           },
-          show: {
+          shows: {
             type: 'object',
             properties: {
               apiVersion: { type: :string },

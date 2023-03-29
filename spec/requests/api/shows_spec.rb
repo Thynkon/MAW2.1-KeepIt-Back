@@ -10,6 +10,7 @@ RSpec.describe 'Shows API', type: :request do
 
       response '200', 'shows found' do
         run_test!
+        schema '$ref' => '#/components/schemas/shows'
       end
     end
   end
@@ -23,6 +24,7 @@ RSpec.describe 'Shows API', type: :request do
 
       response '200', 'shows found' do
         run_test!
+        schema '$ref' => '#/components/schemas/shows'
       end
     end
   end
@@ -36,6 +38,7 @@ RSpec.describe 'Shows API', type: :request do
       response '200', 'show found' do
         let(:id) { 57243 }
         run_test!
+        schema '$ref' => '#/components/schemas/show'
       end
     end
   end

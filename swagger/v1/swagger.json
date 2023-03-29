@@ -53,7 +53,7 @@
           }
         }
       },
-      "movie": {
+      "movies": {
         "type": "object",
         "properties": {
           "apiVersion": {
@@ -207,7 +207,7 @@
           }
         }
       },
-      "show": {
+      "shows": {
         "type": "object",
         "properties": {
           "apiVersion": {
@@ -1360,7 +1360,14 @@
         ],
         "responses": {
           "200": {
-            "description": "movies found"
+            "description": "movies found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/movies"
+                }
+              }
+            }
           }
         }
       }
@@ -1393,7 +1400,14 @@
         ],
         "responses": {
           "200": {
-            "description": "movies found"
+            "description": "movies found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/movies"
+                }
+              }
+            }
           }
         }
       }
@@ -1416,7 +1430,14 @@
         ],
         "responses": {
           "200": {
-            "description": "movie found"
+            "description": "movie found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/movie"
+                }
+              }
+            }
           }
         }
       }
@@ -1556,7 +1577,14 @@
         ],
         "responses": {
           "200": {
-            "description": "shows found"
+            "description": "shows found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shows"
+                }
+              }
+            }
           }
         }
       }
@@ -1589,7 +1617,14 @@
         ],
         "responses": {
           "200": {
-            "description": "shows found"
+            "description": "shows found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shows"
+                }
+              }
+            }
           }
         }
       }
@@ -1612,7 +1647,14 @@
         ],
         "responses": {
           "200": {
-            "description": "show found"
+            "description": "show found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/show"
+                }
+              }
+            }
           }
         }
       }

@@ -10,6 +10,7 @@ RSpec.describe 'Movies API', type: :request do
 
       response '200', 'movies found' do
         run_test!
+        schema '$ref' => '#/components/schemas/movies'
       end
     end
   end
@@ -23,6 +24,7 @@ RSpec.describe 'Movies API', type: :request do
 
       response '200', 'movies found' do
         run_test!
+        schema '$ref' => '#/components/schemas/movies'
       end
     end
   end
@@ -36,6 +38,7 @@ RSpec.describe 'Movies API', type: :request do
       response '200', 'movie found' do
         let(:id) { 10_479 }
         run_test!
+        schema '$ref' => '#/components/schemas/movie'
       end
     end
   end
