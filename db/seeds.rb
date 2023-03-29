@@ -19,15 +19,13 @@ users = User.all
 achievements = []
 
 100.times do |i|
-    achievements << Achievement.create!(title: "#{Faker::Book.title}#{i}" , description: Faker::Lorem.paragraph, percentage: rand(1..100))
+    achievements << Achievement.create!(title: "#{Faker::Book.title}#{i}" , description: Faker::Lorem.paragraph)
 end
 
 # Add one achievement to each user (except demo)
 users.each do |user|
-    if user.username != "demo"
-        user.achievements << achievements.sample
-        user.save!
-    end
+    user.achievements << achievements.sample
+    user.save!
 end
 
 # Add all achivements to demo user
