@@ -49,8 +49,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users do
-    resources :achievements, only: [:index]
+  resources :users, constraints: {id: /[0-9]+/ } do
+    resources :achievements, only: [:index], constraints: {id: /[0-9]+/ }
     member do
       get 'achievements/count', to: 'achievements#count'
     end
@@ -64,9 +64,9 @@ Rails.application.routes.draw do
     end
   end
 
-  put '/invitations/:id/accept', to: 'invitations#accept'
-  delete '/invitations/:id', to: 'invitations#destroy'
+  put '/invitations/:id/accept', to: 'invitations#accept', constraint: {id: /[0-9]+/}
+  delete '/invitations/:id', to: 'invitations#destroy', constraint: {id: /[0-9]+/}
 
   # Achievements of current user
-  resources :achievements, only: [:index, :show]
+  resources :achievements, only: [:index, :show], constraint: {id: /[0-9]+/ }
 end

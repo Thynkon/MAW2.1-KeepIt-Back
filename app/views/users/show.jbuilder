@@ -7,7 +7,7 @@ json.data do
     json.email @user.email
     json.username @user.username
 
-    if @current_user.friend?(@user)
+    if @current_user&.friend?(@user)
       friendship = @current_user.friendship(@user)
       json.friendship do
         json.id friendship.id
