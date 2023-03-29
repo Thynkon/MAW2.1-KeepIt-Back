@@ -10,7 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_23_081958) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_25_144317) do
+  create_table "achievements", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "percentage", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_achievements_on_title", unique: true
+  end
+
+  create_table "user_has_achievements", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "achievement_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["achievement_id"], name: "index_user_has_achievements_on_achievement_id"
+    t.index ["user_id"], name: "index_user_has_achievements_on_user_id"
+  end
+
+  create_table "user_has_friends", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "friend_id", null: false
+    t.boolean "confirmed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_user_has_friends_on_friend_id"
+    t.index ["user_id", "friend_id"], name: "index_user_has_friends_on_user_id_and_friend_id", unique: true
+    t.index ["user_id"], name: "index_user_has_friends_on_user_id"
+  end
+
   create_table "user_jwt_refresh_keys", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "key", null: false
@@ -113,6 +142,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_23_081958) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "user_has_achievements", "achievements"
+  add_foreign_key "user_has_achievements", "users"
+  add_foreign_key "user_has_friends", "users"
+  add_foreign_key "user_has_friends", "users", column: "friend_id"
   add_foreign_key "user_jwt_refresh_keys", "users"
   add_foreign_key "user_login_change_keys", "users", column: "id"
   add_foreign_key "user_password_reset_keys", "users", column: "id"
