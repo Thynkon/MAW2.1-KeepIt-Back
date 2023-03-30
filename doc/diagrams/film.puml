@@ -1,27 +1,26 @@
-@startuml
-class Film {
-  + <<get>> id: integer
-  + <<get>> title: string
-  + <<get>> overview: string
-  + <<get>> duration: integer   /' Called runtime on the API '/
-  + <<get>> poster: string      /' The advertising image of the film '/
-  + <<get>> genres: string[]
-  + <<get>> producers: string[]
-
-  + find(id: integer): Film
-  + find(title: string): Film[]
+@startuml BooksDiagram
+abstract class TheMovieDbClient {
+  + popular(type: string, page: integer): JSON
+  + by_id(type: string, id: integer): JSON
+  + by_title(type: string, title: string,page: interger): JSON
+  + season_by_number(show_id: integer, season_id: integer): JSON
+  + episode_by_number_in_season(show_id: integer, season_id: integer, episode_id: integer): JSON
+  - fetch_response(response: JSON): JSON
+  - send(query: string): JSON
+  - add_image_irl(content: object): JSON
 }
 
-abstract class FilmClient {
-  + fetch(id: integer): Film
-  + fetch(title: string): Film[]
+interface TheMovieDbQueryBuilder {
+  + where(field: string, value: any): TheMovieDbQueryBuilder
+  + search_mode(enabled: boolean): TheMovieDbQueryBuilder
+  + popular(enabled: boolean): TheMovieDbQueryBuilder
+  + type(type: string): TheMovieDbQueryBuilder
+  + season(season: integer): TheMovieDbQueryBuilder
+  + episode(episode: integer): TheMovieDbQueryBuilder
+  + valid?(): boolean|Error
+  + build(): string
 }
 
-class TheMovieDbClient{
+TheMovieDbClient ..> TheMovieDbQueryBuilder
 
-}
-
-FilmClient <|-- TheMovieDbClient
-
-Film *-- FilmClient
 @enduml
