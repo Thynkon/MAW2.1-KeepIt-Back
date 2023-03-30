@@ -158,3 +158,11 @@ class User < ApplicationRecord
   self.serializable_fields = [:username, :email]
 end
 ```
+
+# Movies and series API
+
+## Query Builder
+
+The API of The Movie Database does not use totally REST conventions. For the Exemple to get a move we have the `https://api.themoviedb.org/movie/:id` but when searching for a movie we have to use `https://api.themoviedb.org/search/movie` instead of `https://api.themoviedb.org/movie/search`. We then had to find a solution to check cases to validate parameters without creating a complex and unmaintainable conditionnal structure. 
+
+The solution for validation that has been found and implemented is [ruby's case pattern matching](https://docs.ruby-lang.org/en/3.0/syntax/pattern_matching_rdoc.html) that allows us to validate querybuilder parameters.
